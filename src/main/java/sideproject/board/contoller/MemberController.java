@@ -7,7 +7,7 @@ import sideproject.board.repository.MemberRepository;
 
 import java.util.List;
 import java.util.Optional;
-
+@RestController
 public class MemberController {
     private final MemberRepository memberRepository;
 
