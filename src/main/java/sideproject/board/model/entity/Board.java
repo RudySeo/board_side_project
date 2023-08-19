@@ -23,7 +23,7 @@ public class Board {
 
     private String title;
 
-    private int like_count;
+    private int likeCount;
     private int view;
 
 

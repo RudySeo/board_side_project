@@ -1,14 +1,21 @@
 package sideproject.board.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class MemberDto {
 
-    private String member_id;
+    @NotEmpty(message = "ID를 입력해주세요")
+    private String memberId;
+    @NotEmpty(message = "password를 입력해주세요")
     private String password;
 
+    @NotNull
     private String name;
-
+    @NotNull
     private int age;
 }

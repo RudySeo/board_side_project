@@ -34,8 +34,7 @@ public class BoardController {
     @DeleteMapping("/board/{id}")
     String deleteBoard(@PathVariable Long id){
         if (!boardRepository.existsById(id)){
-            String 오류입니다 = "오류입니다";
-            return 오류입니다;
+            return "오류입니다";
         }
         boardRepository.deleteById(id);
         return id + "삭제 완료 했습니다";
