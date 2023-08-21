@@ -25,36 +25,21 @@ public class MemberController {
         member.setAge(memberDto.getAge());
 
         Long id = memberService.newMember(member);
-        return  id;
+        return id;
     }
-//
-//    @GetMapping("/users")
-//    List<Member> getAllMember() {
-//        return memberRepository.findAll();
-//    }
 
-//    @GetMapping("/user/{id}")
-//    Member getMemberById(@PathVariable Long id) {
-//        return memberRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-//    }
-//
-//    @PutMapping("/user/{id}")
-//    Optional<Member> upadateMember(@RequestBody Member MemberDto, @PathVariable Long id) {
-//
-//        return Optional.ofNullable(memberRepository.findById(id)
-//                .map(member -> {
-//                    member.setName(MemberDto.getName());
-//                    member.setAge(MemberDto.getAge());
-//                    return memberRepository.save(member);
-//                }).orElseThrow(() -> new UserNotFoundException(id)));
-//    }
-//
-//    @DeleteMapping("/user/{id}")
-//    String deleteMember(@PathVariable Long id) {
-//        if (!memberRepository.existsById(id)) {
-//            throw new UserNotFoundException(id);
-//        }
-//        memberRepository.deleteById(id);
-//        return id + "삭제 완료 했습니다";
-//    }
+    @PutMapping("/user/{id}")
+    public Boolean upadateMember(@RequestBody MemberDto memberDto, @PathVariable Long id) {
+
+        try {
+            memberService.update(id, memberDto);
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }
