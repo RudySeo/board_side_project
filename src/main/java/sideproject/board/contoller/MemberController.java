@@ -63,14 +63,14 @@ public class MemberController {
 
 	@Data
 	@AllArgsConstructor
-	static class result<T> {
+	public static class result<T> {
 		private T data;
 
 	}
 
 	@Data
 	@AllArgsConstructor
-	static class MemberDto1 {
+	public static class MemberDto1 {
 		private String memberId;
 		private String name;
 		private int age;

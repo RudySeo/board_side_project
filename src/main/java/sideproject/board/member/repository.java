@@ -1,4 +1,8 @@
 package sideproject.board.member;
 
-public interface repository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+
+public interface repository extends JpaRepository<entity, Long> {
+
 }
