@@ -3,41 +3,44 @@ package sideproject.board.member;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import sideproject.board.exception.UserNotFoundException;
-import sideproject.board.member.requests.createMemberRequest;
+import sideproject.board.member.requests.CreateMemberRequest;
 import sideproject.board.model.dto.MemberDto;
 import sideproject.board.model.entity.Member;
 import sideproject.board.repository.MemberRepository;
 
-@Service
+@org.springframework.stereotype.Service
 @RequiredArgsConstructor
-public class service {
+public class Service {
 
-	private final repository repositorys;
+	private final Repository repositorys;
 	private final MemberRepository memberRepository;
 
 	@Transactional
-	public void newMember(createMemberRequest _createMemberRequest) {
+	public boolean newMember(CreateMemberRequest createMemberRequest) {
 
 		try {
-			entity memberentity = new entity();
-			memberentity.setEmail(_createMemberRequest.getEmail());
-			memberentity.setPassword(_createMemberRequest.getPassword());
-			memberentity.setName(_createMemberRequest.getName());
-			memberentity.setAge(_createMemberRequest.getAge());
-
+			Entity memberentity = new Entity();
+			System.out.println(createMemberRequest + "aaaaaa");
+			memberentity.setEmail(createMemberRequest.getEmail());
+			memberentity.setPassword(createMemberRequest.getPassword());
+			memberentity.setName(createMemberRequest.getName());
+			memberentity.setAge(createMemberRequest.getAge());
 			repositorys.save(memberentity);
+			return true;
+
 		} catch (Exception e) {
 			System.out.println("오류입니다");
+			return false;
 		}
 	}
 
 	@Transactional(readOnly = true)
 	public List<Member> getAllMember() {
+
 		return memberRepository.findAll();
 	}
 

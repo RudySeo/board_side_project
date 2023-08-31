@@ -1,4 +1,4 @@
-package sideproject.board.member.responses;
+package sideproject.board.member.requests;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -6,7 +6,8 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class createMemberResponse {
+public class CreateMemberRequest {
+
 	@NotEmpty(message = "email를 입력해주세요")
 	private String email;
 	@NotEmpty(message = "password를 입력해주세요")
