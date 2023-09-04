@@ -10,14 +10,14 @@ import sideproject.board.member.requests.UpdateMemberRequest;
 
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
-public class Service {
+public class MemberService {
 
-	private final Repository repositorys;
+	private final MemberRepository repositorys;
 
 	@Transactional
-	public Entity newMember(CreateMemberRequest createMemberRequest) {
+	public MemberEntity newMember(CreateMemberRequest createMemberRequest) {
 
-		Entity memberentity = new Entity();
+		MemberEntity memberentity = new MemberEntity();
 		memberentity.setEmail(createMemberRequest.getEmail());
 		memberentity.setPassword(createMemberRequest.getPassword());
 		memberentity.setName(createMemberRequest.getName());
@@ -28,19 +28,19 @@ public class Service {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Entity> getAllMember() {
+	public List<MemberEntity> getAllMember() {
 
 		return repositorys.findAll();
 	}
 
 	@Transactional(readOnly = true)
-	public Entity getMemberById(Long id) {
+	public MemberEntity getMemberById(Long id) {
 		return repositorys.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 유저 아이디가 없습니다. id" + id));
 	}
 
 	@Transactional
 	public UpdateMemberRequest updateMember(Long id, UpdateMemberRequest updateMemberRequest) {
-		Entity findMember = repositorys.findById(id)
+		MemberEntity findMember = repositorys.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("해당 유저 아이디가 없습니다. id" + id));
 		findMember.setName(updateMemberRequest.getName());
 		findMember.setAge(updateMemberRequest.getAge());
@@ -51,7 +51,7 @@ public class Service {
 
 	@Transactional
 	public Long DeleteMember(Long id) {
-		Entity findMember = repositorys.findById(id)
+		MemberEntity findMember = repositorys.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("해당 유저 아이디가 없습니다. id" + id));
 		repositorys.deleteById(id);
 		return findMember.getId();

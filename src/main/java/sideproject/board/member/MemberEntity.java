@@ -18,7 +18,7 @@ import sideproject.board.common.BaseEntity;
 @Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Entity extends BaseEntity {
+public class MemberEntity extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

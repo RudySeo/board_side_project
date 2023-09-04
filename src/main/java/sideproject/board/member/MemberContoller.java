@@ -22,16 +22,16 @@ import sideproject.board.member.responses.ResponseHandler;
 @RestController
 @RequiredArgsConstructor
 
-public class Contoller {
+public class MemberContoller {
 
-	private final Service service;
+	private final MemberService memberService;
 
 
 	@PostMapping("/user")
 	public ResponseEntity<Object> createMember(@RequestBody @Valid CreateMemberRequest createMemberRequest) {
 
 		try {
-			Entity result = service.newMember(createMemberRequest);
+			MemberEntity result = memberService.newMember(createMemberRequest);
 			return ResponseHandler.generateResponse("Successfully added data!", HttpStatus.CREATED, result);
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
@@ -42,7 +42,7 @@ public class Contoller {
 	@GetMapping("/users")
 	public ResponseEntity<Object> allMembers() {
 		try {
-			List<Entity> result = service.getAllMember();
+			List<MemberEntity> result = memberService.getAllMember();
 			return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result);
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.OK, null);
@@ -52,7 +52,7 @@ public class Contoller {
 	@GetMapping("/user/{id}")
 	public ResponseEntity<Object> oneMemberById(@PathVariable Long id) {
 		try {
-			Entity result = service.getMemberById(id);
+			MemberEntity result = memberService.getMemberById(id);
 			return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result);
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
@@ -63,7 +63,7 @@ public class Contoller {
 	public ResponseEntity<Object> updateMember(@PathVariable Long id,
 		@RequestBody UpdateMemberRequest updateMemberRequest) {
 		try {
-			UpdateMemberRequest result = service.updateMember(id, updateMemberRequest);
+			UpdateMemberRequest result = memberService.updateMember(id, updateMemberRequest);
 
 			return ResponseHandler.generateResponse("Successfully updated data!", HttpStatus.OK, result);
 		} catch (Exception e) {
@@ -74,7 +74,7 @@ public class Contoller {
 	@DeleteMapping("/user/{id}")
 	public ResponseEntity<Object> Delete(@PathVariable Long id) {
 		try {
-			Long result = service.DeleteMember(id);
+			Long result = memberService.DeleteMember(id);
 			return ResponseHandler.generateResponse("Deleted!", HttpStatus.OK, result);
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
