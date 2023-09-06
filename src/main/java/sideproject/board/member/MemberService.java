@@ -11,8 +11,10 @@ import lombok.RequiredArgsConstructor;
 import sideproject.board.exception.UserNotFoundException;
 import sideproject.board.member.Entity.MemberEntity;
 import sideproject.board.member.contoller.requests.CreateMemberRequest;
+import sideproject.board.member.contoller.requests.UpdateMemberRequest;
 import sideproject.board.member.contoller.responses.CreateMemberResponse;
 import sideproject.board.member.contoller.responses.MemberListResponse;
+import sideproject.board.member.contoller.responses.UpdateMemberResponse;
 
 @RequiredArgsConstructor
 @Builder
@@ -22,12 +24,11 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 
 	@Transactional
-	public CreateMemberResponse newMember(CreateMemberRequest createMemberRequest) {
-		// //DTO to Entity
+	public CreateMemberResponse createMember(CreateMemberRequest createMemberRequest) {
 		MemberEntity memberEntity = MemberEntity.convertToEntity(createMemberRequest);
-		// //SAVE
+
 		MemberEntity saveEntity = memberRepository.save(memberEntity);
-		// //Entity TO DTO
+
 		CreateMemberResponse createMemberResponse = CreateMemberResponse.convertToCreateMemberRes(saveEntity);
 		return createMemberResponse;
 	}
@@ -46,6 +47,7 @@ public class MemberService {
 
 	@Transactional(readOnly = true)
 	public MemberListResponse getMemberById(Long id) {
+
 		MemberEntity memberEntity = memberRepository.findById(id)
 			.orElseThrow(() -> new UserNotFoundException("해당 유저 아이디가 없습니다. id" + id));
 
@@ -53,14 +55,31 @@ public class MemberService {
 		return memberListResponse;
 	}
 
+	@Transactional
+	public UpdateMemberResponse updateMember(Long id, UpdateMemberRequest updateMemberRequest) {
+
+		MemberEntity memberEntity = memberRepository.findById(id)
+			.orElseThrow(() -> new UserNotFoundException("해당 유저 아이디가 없습니다. id" + id));
+
+		memberEntity.setName(updateMemberRequest.getName());
+		memberEntity.setAge(updateMemberRequest.getAge());
+
+		MemberEntity updatedEntity = memberRepository.save(memberEntity);
+
+		UpdateMemberResponse updateMemberResponse = UpdateMemberResponse.convertToUpdateMemberRes(updatedEntity);
+		return updateMemberResponse;
+	}
+
 
 
 	@Transactional
-	public Long DeleteMember(Long id) {
-		MemberEntity findMember = memberRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("해당 유저 아이디가 없습니다. id" + id));
-		memberRepository.deleteById(id);
-		return findMember.getId();
+	public boolean DeleteMember(Long id) {
+
+		MemberEntity memberEntity = memberRepository.findById(id)
+			.orElseThrow(() -> new UserNotFoundException("해당 유저 아이디가 없습니다. id" + id));
+
+		memberRepository.delete(memberEntity);
+		return true;
 
 	}
 }

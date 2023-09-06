@@ -5,9 +5,11 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,8 +18,10 @@ import lombok.RequiredArgsConstructor;
 import sideproject.board.common.CommonResponseEntity;
 import sideproject.board.member.MemberService;
 import sideproject.board.member.contoller.requests.CreateMemberRequest;
+import sideproject.board.member.contoller.requests.UpdateMemberRequest;
 import sideproject.board.member.contoller.responses.CreateMemberResponse;
 import sideproject.board.member.contoller.responses.MemberListResponse;
+import sideproject.board.member.contoller.responses.UpdateMemberResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +35,7 @@ public class MemberContoller {
 	public CommonResponseEntity<CreateMemberResponse> createMember(
 		@RequestBody @Valid CreateMemberRequest createMemberRequest) {
 
-		CreateMemberResponse res = memberService.newMember(createMemberRequest);
+		CreateMemberResponse res = memberService.createMember(createMemberRequest);
 		CommonResponseEntity<CreateMemberResponse> responseEntity = CommonResponseEntity.<CreateMemberResponse>builder()
 
 			.result(true)
@@ -60,42 +64,39 @@ public class MemberContoller {
 	public CommonResponseEntity<MemberListResponse> getMember(@PathVariable Long id) {
 		MemberListResponse result = memberService.getMemberById(id);
 
-		if (result != null) {
-			CommonResponseEntity<MemberListResponse> responseEntity = CommonResponseEntity.<MemberListResponse>builder()
-				.result(true)
-				.status(HttpStatus.OK)
-				.data(result)
-				.build();
+		CommonResponseEntity<MemberListResponse> responseEntity = CommonResponseEntity.<MemberListResponse>builder()
+			.result(true)
+			.status(HttpStatus.OK)
+			.data(result)
+			.build();
 
-			return responseEntity;
-		} else {
-			return CommonResponseEntity.<MemberListResponse>builder()
-				.result(false)
-				.status(HttpStatus.NOT_FOUND)
-				.build();
-		}
+		return responseEntity;
+
+
 	}
 
-	// @PutMapping("/user/{id}")
-	// public ResponseEntity<Object> updateMember(@PathVariable Long id,
-	// 	@RequestBody UpdateMemberRequest updateMemberRequest) {
-	// 	try {
-	// 		UpdateMemberRequest result = memberService.updateMember(id, updateMemberRequest);
-	//
-	// 		return ResponseHandler.generateResponse("Successfully updated data!", HttpStatus.OK, result);
-	// 	} catch (Exception e) {
-	// 		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-	// 	}
-	// }
+	@PutMapping("/user/{id}")
+	public CommonResponseEntity<UpdateMemberResponse> updateMember(@PathVariable Long id,
+		@RequestBody UpdateMemberRequest updateMemberRequest) {
+		UpdateMemberResponse result = memberService.updateMember(id, updateMemberRequest);
 
-	// @DeleteMapping("/user/{id}")
-	// public ResponseEntity<Object> Delete(@PathVariable Long id) {
-	// 	try {
-	// 		Long result = memberService.DeleteMember(id);
-	// 		return ResponseHandler.generateResponse("Deleted!", HttpStatus.OK, result);
-	// 	} catch (Exception e) {
-	// 		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-	// 	}
-	// }
+		CommonResponseEntity<UpdateMemberResponse> responseEntity = CommonResponseEntity.<UpdateMemberResponse>builder()
+			.result(true)
+			.status(HttpStatus.OK)
+			.data(result)
+			.build();
+
+		return responseEntity;
+
+
+	}
+
+	@DeleteMapping("/user/{id}")
+	public boolean Delete(@PathVariable Long id) {
+
+		boolean result = memberService.DeleteMember(id);
+
+		return true;
+	}
 
 }

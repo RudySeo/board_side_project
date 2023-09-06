@@ -13,7 +13,7 @@ import lombok.Setter;
 public class CommonResponseEntity<T> {
 	private boolean result;
 	private T data;
-	private HttpStatus status = HttpStatus.OK;
+	private HttpStatus status;
 
 	@Builder
 	public CommonResponseEntity(boolean result, T data, HttpStatus status) {
