@@ -12,13 +12,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CommonResponseEntity<T> {
 	private boolean result;
-	private T body;
+	private T data;
 	private HttpStatus status = HttpStatus.OK;
 
 	@Builder
-	public CommonResponseEntity(boolean result, T body, HttpStatus status) {
+	public CommonResponseEntity(boolean result, T data, HttpStatus status) {
 		this.result = result;
-		this.body = body;
+		this.data = data;
 		this.status = status;
 	}
 }

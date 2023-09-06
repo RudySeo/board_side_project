@@ -1,8 +1,11 @@
 package sideproject.board.member.contoller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +16,7 @@ import sideproject.board.common.CommonResponseEntity;
 import sideproject.board.member.MemberService;
 import sideproject.board.member.contoller.requests.CreateMemberRequest;
 import sideproject.board.member.contoller.responses.CreateMemberResponse;
+import sideproject.board.member.contoller.responses.MemberListResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,21 +35,25 @@ public class MemberContoller {
 
 			.result(true)
 			.status(HttpStatus.CREATED)
-			.body(res)
+			.data(res)
 			.build();
 
 		return responseEntity;
 	}
 
-	// @GetMapping("/users")
-	// public ResponseEntity<Object> allMembers() {
-	// 	try {
-	// 		List<MemberEntity> result = memberService.getAllMember();
-	// 		return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result);
-	// 	} catch (Exception e) {
-	// 		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.OK, null);
-	// 	}
-	// }
+	@GetMapping("/users")
+	public CommonResponseEntity<List<MemberListResponse>> allMembers() {
+		List<MemberListResponse> result = memberService.getAllMember();
+		CommonResponseEntity<List<MemberListResponse>> responseEntity = CommonResponseEntity.<List<MemberListResponse>>builder()
+
+			.result(true)
+			.status(HttpStatus.OK)
+			.data(result)
+			.build();
+
+		return responseEntity;
+
+	}
 	//
 	// @GetMapping("/user/{id}")
 	// public ResponseEntity<Object> oneMemberById(@PathVariable Long id) {

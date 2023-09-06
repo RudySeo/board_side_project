@@ -1,6 +1,7 @@
 package sideproject.board.member;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import sideproject.board.member.Entity.MemberEntity;
 import sideproject.board.member.contoller.requests.CreateMemberRequest;
 import sideproject.board.member.contoller.responses.CreateMemberResponse;
+import sideproject.board.member.contoller.responses.MemberListResponse;
 
 @RequiredArgsConstructor
 @Builder
@@ -30,9 +32,15 @@ public class MemberService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<MemberEntity> getAllMember() {
+	public List<MemberListResponse> getAllMember() {
 
-		return memberRepository.findAll();
+		List<MemberEntity> members = memberRepository.findAll();
+
+		List<MemberListResponse> result = members.stream()
+			.map(m -> new MemberListResponse(m.getId(), m.getEmail(), m.getName(), m.getAge()))
+			.collect(Collectors.toList());
+
+		return result;
 	}
 
 	@Transactional(readOnly = true)
