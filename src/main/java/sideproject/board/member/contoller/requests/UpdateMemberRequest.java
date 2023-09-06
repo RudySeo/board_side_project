@@ -1,4 +1,4 @@
-package sideproject.board.member.requests;
+package sideproject.board.member.contoller.requests;
 
 import javax.validation.constraints.NotNull;
 

@@ -2,58 +2,52 @@ package sideproject.board.member;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import sideproject.board.member.requests.CreateMemberRequest;
-import sideproject.board.member.requests.UpdateMemberRequest;
+import sideproject.board.member.Entity.MemberEntity;
+import sideproject.board.member.contoller.requests.CreateMemberRequest;
+import sideproject.board.member.contoller.responses.CreateMemberResponse;
 
-@org.springframework.stereotype.Service
 @RequiredArgsConstructor
+@Builder
+@Service
 public class MemberService {
 
-	private final MemberRepository repositorys;
+	private final MemberRepository memberRepository;
 
 	@Transactional
-	public MemberEntity newMember(CreateMemberRequest createMemberRequest) {
-
-		MemberEntity memberentity = new MemberEntity();
-		memberentity.setEmail(createMemberRequest.getEmail());
-		memberentity.setPassword(createMemberRequest.getPassword());
-		memberentity.setName(createMemberRequest.getName());
-		memberentity.setAge(createMemberRequest.getAge());
-
-		return repositorys.save(memberentity);
-
+	public CreateMemberResponse newMember(CreateMemberRequest createMemberRequest) {
+		// //DTO to Entity
+		MemberEntity memberEntity = MemberEntity.convertToEntity(createMemberRequest);
+		// //SAVE
+		MemberEntity saveEntity = memberRepository.save(memberEntity);
+		// //Entity TO DTO
+		CreateMemberResponse createMemberResponse = CreateMemberResponse.convertToCreateMemberRes(saveEntity);
+		return createMemberResponse;
 	}
 
 	@Transactional(readOnly = true)
 	public List<MemberEntity> getAllMember() {
 
-		return repositorys.findAll();
+		return memberRepository.findAll();
 	}
 
 	@Transactional(readOnly = true)
 	public MemberEntity getMemberById(Long id) {
-		return repositorys.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 유저 아이디가 없습니다. id" + id));
-	}
-
-	@Transactional
-	public UpdateMemberRequest updateMember(Long id, UpdateMemberRequest updateMemberRequest) {
-		MemberEntity findMember = repositorys.findById(id)
+		return memberRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("해당 유저 아이디가 없습니다. id" + id));
-		findMember.setName(updateMemberRequest.getName());
-		findMember.setAge(updateMemberRequest.getAge());
-		repositorys.save(findMember);
-
-		return updateMemberRequest;
 	}
+
+
 
 	@Transactional
 	public Long DeleteMember(Long id) {
-		MemberEntity findMember = repositorys.findById(id)
+		MemberEntity findMember = memberRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("해당 유저 아이디가 없습니다. id" + id));
-		repositorys.deleteById(id);
+		memberRepository.deleteById(id);
 		return findMember.getId();
 
 	}
