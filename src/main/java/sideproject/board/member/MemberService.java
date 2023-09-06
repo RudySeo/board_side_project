@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import sideproject.board.exception.UserNotFoundException;
 import sideproject.board.member.Entity.MemberEntity;
 import sideproject.board.member.contoller.requests.CreateMemberRequest;
 import sideproject.board.member.contoller.responses.CreateMemberResponse;
@@ -44,9 +45,12 @@ public class MemberService {
 	}
 
 	@Transactional(readOnly = true)
-	public MemberEntity getMemberById(Long id) {
-		return memberRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("해당 유저 아이디가 없습니다. id" + id));
+	public MemberListResponse getMemberById(Long id) {
+		MemberEntity memberEntity = memberRepository.findById(id)
+			.orElseThrow(() -> new UserNotFoundException("해당 유저 아이디가 없습니다. id" + id));
+
+		MemberListResponse memberListResponse = MemberListResponse.convertToGetMemberRes(memberEntity);
+		return memberListResponse;
 	}
 
 

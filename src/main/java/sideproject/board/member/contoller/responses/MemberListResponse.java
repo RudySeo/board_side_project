@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import sideproject.board.member.Entity.MemberEntity;
 
 @Data
 @AllArgsConstructor
@@ -18,4 +19,13 @@ public class MemberListResponse {
 	private String name;
 	@NotNull
 	private int age;
+
+	public static MemberListResponse convertToGetMemberRes(MemberEntity MemberEntity) {
+		return MemberListResponse.builder()
+			.id(MemberEntity.getId())
+			.email(MemberEntity.getEmail())
+			.name(MemberEntity.getName())
+			.age(MemberEntity.getAge())
+			.build();
+	}
 }

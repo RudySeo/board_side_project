@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,16 +55,26 @@ public class MemberContoller {
 		return responseEntity;
 
 	}
-	//
-	// @GetMapping("/user/{id}")
-	// public ResponseEntity<Object> oneMemberById(@PathVariable Long id) {
-	// 	try {
-	// 		MemberEntity result = memberService.getMemberById(id);
-	// 		return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result);
-	// 	} catch (Exception e) {
-	// 		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-	// 	}
-	// }
+
+	@GetMapping("/user/{id}")
+	public CommonResponseEntity<MemberListResponse> getMember(@PathVariable Long id) {
+		MemberListResponse result = memberService.getMemberById(id);
+
+		if (result != null) {
+			CommonResponseEntity<MemberListResponse> responseEntity = CommonResponseEntity.<MemberListResponse>builder()
+				.result(true)
+				.status(HttpStatus.OK)
+				.data(result)
+				.build();
+
+			return responseEntity;
+		} else {
+			return CommonResponseEntity.<MemberListResponse>builder()
+				.result(false)
+				.status(HttpStatus.NOT_FOUND)
+				.build();
+		}
+	}
 
 	// @PutMapping("/user/{id}")
 	// public ResponseEntity<Object> updateMember(@PathVariable Long id,
