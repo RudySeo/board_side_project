@@ -1,4 +1,4 @@
-package sideproject.board.board.entity;
+package sideproject.board.board.domain.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import sideproject.board.board.controller.dto.requests.CreateBoardRequest;
 
 @Entity
 @Getter
@@ -45,4 +46,11 @@ public class BoardEntity {
 	@JoinColumn(name = "PRICE_ID")
 	private PriceEntity price;
 
+	public static BoardEntity toEntity(CreateBoardRequest request) {
+		return BoardEntity.builder()
+			.id(request.getId())
+			.title(request.getTitle())
+			.content(request.getTitle())
+			.build();
+	}
 }
