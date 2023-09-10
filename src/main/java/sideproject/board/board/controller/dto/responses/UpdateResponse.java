@@ -1,20 +1,19 @@
-package sideproject.board.board.controller.dto.requests;
+package sideproject.board.board.controller.dto.responses;
 
 import lombok.Builder;
 import lombok.Data;
 import sideproject.board.board.domain.entity.BoardEntity;
 
 @Data
-public class createBoardResponse {
+public class UpdateResponse {
 	private Long id;
 	private String title;
 	private String content;
 
 	@Builder
-	public createBoardResponse(BoardEntity board) {
+	public UpdateResponse(BoardEntity board) {
 		this.id = board.getId();
 		this.title = board.getTitle();
 		this.content = board.getContent();
 	}
-
 }

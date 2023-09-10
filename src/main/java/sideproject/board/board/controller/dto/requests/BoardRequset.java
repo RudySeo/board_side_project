@@ -1,4 +1,4 @@
 package sideproject.board.board.controller.dto.requests;
 
-public class boardRequset {
+public class BoardRequset {
 }
