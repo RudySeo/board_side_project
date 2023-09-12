@@ -7,10 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import sideproject.board.board.controller.dto.requests.CreateBoardRequest;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.controller.dto.responses.BoardResponse;
-import sideproject.board.board.controller.dto.responses.CreateBoardResponse;
 import sideproject.board.board.controller.dto.responses.UpdateResponse;
 import sideproject.board.board.domain.BoardRepository;
 import sideproject.board.board.domain.entity.BoardEntity;
@@ -22,13 +20,8 @@ public class BoardService {
 	private final BoardRepository boardRepository;
 
 	@Transactional
-	public CreateBoardResponse createBoard(CreateBoardRequest request) {
-
-		BoardEntity board = BoardEntity.toEntity(request);
-		boardRepository.save(board);
-
-		return CreateBoardResponse.builder().board(board).build();
-
+	public BoardEntity createBoard(BoardEntity request) {
+		return boardRepository.save(request);
 	}
 
 	@Transactional(readOnly = true)

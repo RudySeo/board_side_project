@@ -6,8 +6,6 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -16,7 +14,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sideproject.board.board.controller.dto.requests.CreateBoardRequest;
 
 @Entity
 @Getter
@@ -42,15 +39,5 @@ public class BoardEntity {
 	@Column
 	private Long likes;
 
-	@OneToOne
-	@JoinColumn(name = "PRICE_ID")
-	private PriceEntity price;
-
-	public static BoardEntity toEntity(CreateBoardRequest request) {
-		return BoardEntity.builder()
-			.id(request.getId())
-			.title(request.getTitle())
-			.content(request.getTitle())
-			.build();
-	}
+	private Long price;
 }

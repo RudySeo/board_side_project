@@ -19,6 +19,7 @@ import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.controller.dto.responses.BoardResponse;
 import sideproject.board.board.controller.dto.responses.CreateBoardResponse;
 import sideproject.board.board.controller.dto.responses.UpdateResponse;
+import sideproject.board.board.domain.entity.BoardEntity;
 import sideproject.board.board.service.BoardService;
 
 @RestController
@@ -31,9 +32,9 @@ public class BoardController {
 	@PostMapping("/board")
 	public CreateBoardResponse createBoard(@RequestBody CreateBoardRequest request) {
 
-		CreateBoardResponse response = boardService.createBoard(request);
-		return response;
+		BoardEntity board = boardService.createBoard(request.toEntity());
 
+		return CreateBoardResponse.builder().board(board).build();
 	}
 
 	@GetMapping("/board")
