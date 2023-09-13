@@ -1,15 +1,12 @@
 package sideproject.board.board.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
-import sideproject.board.board.controller.dto.responses.BoardResponse;
-import sideproject.board.board.controller.dto.responses.UpdateResponse;
 import sideproject.board.board.domain.BoardRepository;
 import sideproject.board.board.domain.entity.BoardEntity;
 
@@ -21,42 +18,34 @@ public class BoardService {
 
 	@Transactional
 	public BoardEntity createBoard(BoardEntity request) {
+
 		return boardRepository.save(request);
 	}
 
 	@Transactional(readOnly = true)
-	public List<BoardResponse> getAllBoard() {
+	public List<BoardEntity> getAllBoard() {
 
-		List<BoardEntity> board = boardRepository.findAll();
-
-		List<BoardResponse> result = board.stream()
-			.map(m -> new BoardResponse(m.getId(), m.getTitle(), m.getContent(), m.getView(), m.getLikes()))
-			.collect(Collectors.toList());
-
-		return result;
+		return boardRepository.findAll();
 	}
 
 	@Transactional(readOnly = true)
-	public BoardResponse getOneBoard(Long id) {
+	public BoardEntity getOneBoard(Long id) {
 
-		BoardEntity board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
-
-		return BoardResponse.builder().board(board).build();
+		return boardRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("아이디 찾을 수 없습니다."));
 
 	}
 
 	@Transactional
-	public UpdateResponse updateBoard(Long id, UpdateRequest request) {
+	public BoardEntity updateBoard(Long id, UpdateRequest request) {
 
-		BoardEntity board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
+		BoardEntity board = boardRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("아이디 찾을 수 없습니다."));
 
-		BoardEntity updateMember = new BoardEntity(id, request.getTitle(), request.getContent(),
-			null, null, null);
+		board.setTitle(request.getTitle());
+		board.setContent(request.getContent());
 
-		boardRepository.save(updateMember);
-
-		return UpdateResponse.builder().board(updateMember).build();
-
+		return null;
 	}
 
 	@Transactional
@@ -65,7 +54,5 @@ public class BoardService {
 			throw new IllegalArgumentException("게시물을 찾을 수 없습니다.");
 		}
 		boardRepository.deleteById(id);
-
 	}
-
 }

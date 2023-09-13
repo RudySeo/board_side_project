@@ -16,5 +16,4 @@ public class CreateBoardResponse {
 		this.title = board.getTitle();
 		this.content = board.getContent();
 	}
-
 }

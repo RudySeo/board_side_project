@@ -38,6 +38,6 @@ public class BoardEntity {
 	private Long view;
 	@Column
 	private Long likes;
-
+	@Column
 	private Long price;
 }

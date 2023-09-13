@@ -1,6 +1,7 @@
 package sideproject.board.board.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,22 +41,29 @@ public class BoardController {
 	@GetMapping("/board")
 	public List<BoardResponse> getAllBoard() {
 
-		List<BoardResponse> response = boardService.getAllBoard();
+		List<BoardEntity> board = boardService.getAllBoard();
+
+		List<BoardResponse> response = board.stream()
+			.map(m -> new BoardResponse(m.getId(), m.getTitle(), m.getContent(), m.getView(), m.getLikes()))
+			.collect(Collectors.toList());
+
 		return response;
 	}
 
 	@GetMapping("/board/{id}")
 	public BoardResponse getOneBoard(@PathVariable Long id) {
 
-		BoardResponse response = boardService.getOneBoard(id);
-		return response;
+		BoardEntity board = boardService.getOneBoard(id);
+
+		return BoardResponse.builder().board(board).build();
 	}
 
 	@PutMapping("/board/{id}")
 	public UpdateResponse updateBoard(@PathVariable Long id, @RequestBody UpdateRequest request) {
 
-		UpdateResponse response = boardService.updateBoard(id, request);
-		return response;
+		BoardEntity board = boardService.updateBoard(id, request);
+
+		return UpdateResponse.builder().board(board).build();
 	}
 
 	@DeleteMapping("/board/{id}")
@@ -66,7 +74,5 @@ public class BoardController {
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시물을 찾을 수 없습니다.");
 		}
-
 	}
-
 }
