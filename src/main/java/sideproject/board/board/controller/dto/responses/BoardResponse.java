@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sideproject.board.board.domain.entity.BoardEntity;
+import sideproject.board.board.domain.entity.Board;
 
 @Data
 @AllArgsConstructor
@@ -19,14 +19,17 @@ public class BoardResponse {
 
 	private Long view;
 
-	private Long likes;
+	private Long like;
+
+	private Long price;
 
 	@Builder
-	public BoardResponse(BoardEntity board) {
+	public BoardResponse(Board board) {
 		this.id = board.getId();
 		this.title = board.getTitle();
 		this.content = board.getContent();
 		this.view = board.getView();
-		this.likes = board.getLikes();
+		this.like = board.getLike();
+		this.price = board.getPrice();
 	}
 }

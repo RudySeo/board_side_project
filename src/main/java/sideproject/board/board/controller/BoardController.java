@@ -3,8 +3,6 @@ package sideproject.board.board.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +16,8 @@ import lombok.RequiredArgsConstructor;
 import sideproject.board.board.controller.dto.requests.CreateBoardRequest;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.controller.dto.responses.BoardResponse;
-import sideproject.board.board.controller.dto.responses.CreateBoardResponse;
 import sideproject.board.board.controller.dto.responses.UpdateResponse;
-import sideproject.board.board.domain.entity.BoardEntity;
+import sideproject.board.board.domain.entity.Board;
 import sideproject.board.board.service.BoardService;
 
 @RestController
@@ -31,20 +28,22 @@ public class BoardController {
 	private final BoardService boardService;
 
 	@PostMapping("/board")
-	public CreateBoardResponse createBoard(@RequestBody CreateBoardRequest request) {
+	public BoardResponse saveBoard(@RequestBody CreateBoardRequest request) {
 
-		BoardEntity board = boardService.createBoard(request.toEntity());
+		Board board = boardService.saveBoard(request.toEntity());
 
-		return CreateBoardResponse.builder().board(board).build();
+		return BoardResponse.builder().board(board).build();
 	}
 
 	@GetMapping("/board")
 	public List<BoardResponse> getAllBoard() {
 
-		List<BoardEntity> board = boardService.getAllBoard();
+		List<Board> board = boardService.getAllBoard();
 
 		List<BoardResponse> response = board.stream()
-			.map(m -> new BoardResponse(m.getId(), m.getTitle(), m.getContent(), m.getView(), m.getLikes()))
+			.map(
+				m -> new BoardResponse(m.getId(), m.getTitle(), m.getContent(),
+					m.getView(), m.getLike(), m.getPrice()))
 			.collect(Collectors.toList());
 
 		return response;
@@ -53,7 +52,7 @@ public class BoardController {
 	@GetMapping("/board/{id}")
 	public BoardResponse getOneBoard(@PathVariable Long id) {
 
-		BoardEntity board = boardService.getOneBoard(id);
+		Board board = boardService.getOneBoard(id);
 
 		return BoardResponse.builder().board(board).build();
 	}
@@ -61,18 +60,15 @@ public class BoardController {
 	@PutMapping("/board/{id}")
 	public UpdateResponse updateBoard(@PathVariable Long id, @RequestBody UpdateRequest request) {
 
-		BoardEntity board = boardService.updateBoard(id, request);
+		Board board = boardService.updateBoard(id, request);
 
 		return UpdateResponse.builder().board(board).build();
 	}
 
 	@DeleteMapping("/board/{id}")
-	public ResponseEntity<String> deleteBoard(@PathVariable Long id) {
-		try {
-			boardService.deleteBoard(id);
-			return ResponseEntity.ok("게시물이 삭제되었습니다.");
-		} catch (IllegalArgumentException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시물을 찾을 수 없습니다.");
-		}
+	public String deleteBoard(@PathVariable Long id) {
+		boardService.deleteBoard(id);
+		return "게시물이 삭제되었습니다.";
+
 	}
 }

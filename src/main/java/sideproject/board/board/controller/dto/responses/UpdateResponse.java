@@ -2,7 +2,7 @@ package sideproject.board.board.controller.dto.responses;
 
 import lombok.Builder;
 import lombok.Data;
-import sideproject.board.board.domain.entity.BoardEntity;
+import sideproject.board.board.domain.entity.Board;
 
 @Data
 public class UpdateResponse {
@@ -11,7 +11,7 @@ public class UpdateResponse {
 	private String content;
 
 	@Builder
-	public UpdateResponse(BoardEntity board) {
+	public UpdateResponse(Board board) {
 		this.id = board.getId();
 		this.title = board.getTitle();
 		this.content = board.getContent();

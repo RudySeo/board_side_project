@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.domain.BoardRepository;
-import sideproject.board.board.domain.entity.BoardEntity;
+import sideproject.board.board.domain.entity.Board;
 
 @Service
 @RequiredArgsConstructor
@@ -17,19 +17,19 @@ public class BoardService {
 	private final BoardRepository boardRepository;
 
 	@Transactional
-	public BoardEntity createBoard(BoardEntity request) {
+	public Board saveBoard(Board request) {
 
 		return boardRepository.save(request);
 	}
 
 	@Transactional(readOnly = true)
-	public List<BoardEntity> getAllBoard() {
+	public List<Board> getAllBoard() {
 
 		return boardRepository.findAll();
 	}
 
 	@Transactional(readOnly = true)
-	public BoardEntity getOneBoard(Long id) {
+	public Board getOneBoard(Long id) {
 
 		return boardRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("아이디 찾을 수 없습니다."));
@@ -37,22 +37,18 @@ public class BoardService {
 	}
 
 	@Transactional
-	public BoardEntity updateBoard(Long id, UpdateRequest request) {
+	public Board updateBoard(Long id, UpdateRequest request) {
 
-		BoardEntity board = boardRepository.findById(id)
+		Board board = boardRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("아이디 찾을 수 없습니다."));
 
-		board.setTitle(request.getTitle());
-		board.setContent(request.getContent());
+		board.update(id, request.getTitle(), request.getContent(), request.getPrice());
 
-		return null;
+		return board;
 	}
 
 	@Transactional
 	public void deleteBoard(Long id) {
-		if (!boardRepository.existsById(id)) {
-			throw new IllegalArgumentException("게시물을 찾을 수 없습니다.");
-		}
 		boardRepository.deleteById(id);
 	}
 }

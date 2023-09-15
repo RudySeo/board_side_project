@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sideproject.board.board.domain.entity.BoardEntity;
+import sideproject.board.board.domain.entity.Board;
 
 @Data
 @AllArgsConstructor
@@ -17,8 +17,8 @@ public class CreateBoardRequest {
 	private String content;
 	private Long price;
 
-	public BoardEntity toEntity() {
-		return BoardEntity.builder()
+	public Board toEntity() {
+		return Board.builder()
 			.id(getId())
 			.title(getTitle())
 			.content(getTitle())

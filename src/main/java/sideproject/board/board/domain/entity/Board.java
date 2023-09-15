@@ -22,7 +22,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Builder
-public class BoardEntity {
+public class Board {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,14 @@ public class BoardEntity {
 	@Column
 	private Long view;
 	@Column
-	private Long likes;
+	private Long like;
 	@Column
 	private Long price;
+
+	public void update(Long id, String title, String content, Long price) {
+		this.id = id;
+		this.title = title;
+		this.content = content;
+		this.price = price;
+	}
 }
