@@ -1,17 +1,12 @@
 package sideproject.board.comment.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import sideproject.board.comment.controller.dto.requests.CreateCommentRequest;
-import sideproject.board.comment.controller.dto.responses.CommentResponse;
-import sideproject.board.comment.controller.dto.responses.UpdateCommentResponse;
-import sideproject.board.comment.controller.dto.responses.createCommentResponse;
-import sideproject.board.comment.model.entity.CommentEntity;
+import sideproject.board.comment.model.entity.Comment;
 import sideproject.board.comment.model.repository.CommentRepositoy;
 
 @Service
@@ -21,45 +16,35 @@ public class CommentService {
 	private final CommentRepositoy commentRepositoy;
 
 	@Transactional
-	public createCommentResponse createComment(CreateCommentRequest request) {
+	public Comment createComment(Comment request) {
 
-		CommentEntity comment = CommentEntity.toEntity(request);
-		commentRepositoy.save(comment);
-
-		return createCommentResponse.builder().comment(comment).build();
+		return commentRepositoy.save(request);
 	}
 
 	@Transactional(readOnly = true)
-	public List<CommentResponse> getAllComment() {
+	public List<Comment> getAllComment() {
 
-		List<CommentEntity> comment = commentRepositoy.findAll();
-
-		List<CommentResponse> result = comment.stream()
-			.map(m -> new CommentResponse(m.getId(), m.getContent()))
-			.collect(Collectors.toList());
-
-		return result;
+		return commentRepositoy.findAll();
 
 	}
 
 	@Transactional(readOnly = true)
-	public CommentResponse getOneComment(Long id) {
+	public Comment getOneComment(Long id) {
 
-		CommentEntity comment = commentRepositoy.findById(id).orElseThrow(() -> new IllegalArgumentException());
+		return commentRepositoy.findById(id).orElseThrow(() -> new IllegalArgumentException());
 
-		return CommentResponse.builder().comment(comment).build();
 	}
 
 	@Transactional
-	public UpdateCommentResponse updateComment(Long id, CreateCommentRequest request) {
+	public Comment updateComment(Long id, Comment request) {
 
-		CommentEntity comment = commentRepositoy.findById(id).orElseThrow(() -> new IllegalArgumentException());
+		Comment comment = commentRepositoy.findById(id).orElseThrow(() -> new IllegalArgumentException());
 
-		CommentEntity updateComment = new CommentEntity(request.getId(), request.getContent());
+		comment.update(id, request.getContent());
 
-		commentRepositoy.save(updateComment);
+		return commentRepositoy.save(comment);
 
-		return UpdateCommentResponse.builder().comment(updateComment).build();
+
 	}
 
 	@Transactional
@@ -69,4 +54,5 @@ public class CommentService {
 		}
 		commentRepositoy.deleteById(id);
 	}
+	
 }

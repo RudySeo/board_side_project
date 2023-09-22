@@ -11,13 +11,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sideproject.board.comment.controller.dto.requests.CreateCommentRequest;
+import sideproject.board.common.BaseEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CommentEntity {
+public class Comment extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +30,16 @@ public class CommentEntity {
 
 
 
-	public static CommentEntity toEntity(CreateCommentRequest request) {
-		return CommentEntity.builder()
+	public static Comment toEntity(CreateCommentRequest request) {
+		return Comment.builder()
 			.id(request.getId())
 			.content(request.getContent())
 			.build();
 	}
+
+	public void update(Long id, String content) {
+		this.id = id;
+		this.content = content;
+	}
+
 }
