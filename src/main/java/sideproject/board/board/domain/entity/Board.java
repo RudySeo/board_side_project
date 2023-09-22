@@ -36,7 +36,7 @@ public class Board {
 
 	@Column
 	private Long view;
-	@Column
+	@Column(name = "likes")
 	private Long like;
 	@Column
 	private Long price;
