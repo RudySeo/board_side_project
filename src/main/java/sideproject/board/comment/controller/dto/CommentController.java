@@ -3,8 +3,6 @@ package sideproject.board.comment.controller.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import sideproject.board.comment.controller.dto.requests.CreateCommentRequest;
 import sideproject.board.comment.controller.dto.responses.CommentResponse;
-import sideproject.board.comment.controller.dto.responses.CreateCommentResponse;
 import sideproject.board.comment.model.entity.Comment;
 import sideproject.board.comment.service.CommentService;
 
@@ -27,11 +24,10 @@ public class CommentController {
 	private final CommentService commentService;
 
 	@PostMapping("/comment")
-	public CreateCommentResponse createComment(@RequestBody @Valid CreateCommentRequest request) {
+	public CommentResponse createComment(@RequestBody CreateCommentRequest request) {
 
 		Comment comment = commentService.createComment(request.toEntity());
-
-		return CreateCommentResponse.builder().comment(comment).build();
+		return CommentResponse.builder().comment(comment).build();
 	}
 
 	@GetMapping("/comment")
@@ -55,16 +51,18 @@ public class CommentController {
 	}
 
 	@PutMapping("/comment/{id}")
-	public CommentResponse updateComment(@PathVariable Long id, @RequestBody @Valid CreateCommentRequest request) {
+	public CommentResponse updateComment(@PathVariable Long id, @RequestBody CreateCommentRequest request) {
 
 		Comment comment = commentService.updateComment(id, request.toEntity());
-		return CommentResponse.builder().comment(comment).build();
 
+		return CommentResponse.builder().comment(comment).build();
 	}
 
 	@DeleteMapping("/comment/{id}")
-	public void deleteComment(@PathVariable Long id) {
+	public String deleteComment(@PathVariable Long id) {
 
 		commentService.deleteBoard(id);
+
+		return "댓글이 삭제되었습니다.";
 	}
 }
