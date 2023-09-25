@@ -24,22 +24,16 @@ public class Comment extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 1000)
 	private String content;
 
 
-
-
 	public static Comment toEntity(CreateCommentRequest request) {
-		return Comment.builder()
-			.id(request.getId())
-			.content(request.getContent())
-			.build();
+		return Comment.builder().id(request.getId()).content(request.getContent()).build();
 	}
 
 	public void update(Long id, String content) {
 		this.id = id;
 		this.content = content;
 	}
-
 }
