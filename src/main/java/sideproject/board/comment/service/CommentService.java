@@ -25,12 +25,14 @@ public class CommentService {
 	public List<Comment> getAllComment() {
 
 		return commentRepositoy.findAll();
+
 	}
 
 	@Transactional(readOnly = true)
 	public Comment getOneComment(Long id) {
 
 		return commentRepositoy.findById(id).orElseThrow(() -> new IllegalArgumentException());
+
 	}
 
 	@Transactional
@@ -38,14 +40,11 @@ public class CommentService {
 
 		Comment comment = commentRepositoy.findById(id).orElseThrow(() -> new IllegalArgumentException());
 
-		String content = request.getContent();
-
-		if (content != null && content.length() > 1000) {
-			throw new IllegalArgumentException("글자수 오류 입니다");
-		}
-		comment.update(id, content);
+		comment.update(id, request.getContent());
 
 		return commentRepositoy.save(comment);
+
+
 	}
 
 	@Transactional
@@ -55,5 +54,5 @@ public class CommentService {
 		}
 		commentRepositoy.deleteById(id);
 	}
-
+	
 }
