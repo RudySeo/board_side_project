@@ -3,6 +3,8 @@ package sideproject.board.member.Entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,12 +33,18 @@ public class MemberEntity extends BaseEntity {
 
 	@Column(nullable = false, unique = true)
 	private String email;
+
 	@Column(nullable = false)
 	private String password;
+
 	@Column(nullable = false)
 	private String name;
+
 	@Column(nullable = false)
 	private int age;
+
+	@Enumerated(EnumType.STRING)
+	private RoleTypeEnum status = RoleTypeEnum.USER;
 
 	public static MemberEntity convertToEntity(CreateMemberRequest request) {
 		return MemberEntity.builder()
