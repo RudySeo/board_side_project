@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
-import sideproject.board.member.MemberService;
+import sideproject.board.member.service.MemberService;
 
 @Configuration
 @EnableWebSecurity

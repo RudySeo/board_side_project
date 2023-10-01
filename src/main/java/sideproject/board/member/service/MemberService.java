@@ -1,4 +1,4 @@
-package sideproject.board.member;
+package sideproject.board.member.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import sideproject.board.exception.UserNotFoundException;
 import sideproject.board.member.Entity.MemberEntity;
+import sideproject.board.member.MemberRepository;
 import sideproject.board.member.contoller.requests.CreateMemberRequest;
 import sideproject.board.member.contoller.requests.UpdateMemberRequest;
 import sideproject.board.member.contoller.responses.CreateMemberResponse;

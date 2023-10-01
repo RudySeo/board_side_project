@@ -18,7 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import sideproject.board.member.MemberService;
+import sideproject.board.member.service.MemberService;
 import sideproject.board.utils.JwtUtil;
 
 @RequiredArgsConstructor
@@ -57,6 +57,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		//유저 이름 꺼내기
 		String username = JwtUtil.getUserName(token, secretKey);
 		log.info(username + "유저 이름 확인");
+		// PrincipalDetails principalDetails = new PrincipalDetails()
 
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
 			null,

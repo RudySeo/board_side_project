@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import sideproject.board.common.CommonResponseEntity;
-import sideproject.board.member.MemberService;
 import sideproject.board.member.contoller.requests.CreateMemberRequest;
 import sideproject.board.member.contoller.requests.UpdateMemberRequest;
 import sideproject.board.member.contoller.responses.CreateMemberResponse;
 import sideproject.board.member.contoller.responses.MemberListResponse;
 import sideproject.board.member.contoller.responses.UpdateMemberResponse;
+import sideproject.board.member.service.MemberService;
 
 @RestController
 @RequiredArgsConstructor
