@@ -28,6 +28,7 @@ public class AuthenticationConfig {
 			.httpBasic().disable()
 			.csrf().disable()
 			.cors().and()
+			.formLogin().disable()
 			.authorizeRequests()
 			.antMatchers("/member").permitAll()
 			.antMatchers(HttpMethod.POST, "/user").authenticated()
