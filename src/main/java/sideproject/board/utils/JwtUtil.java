@@ -8,12 +8,19 @@ import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import sideproject.board.member.Entity.MemberEntity;
 
 public class JwtUtil {
 	@Value("${jwt.secretKey}")
 	private String secretKey;
 
 	public static String getUserName(String token, String secretKey) {
+		return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
+			.getBody().get("userName", String.class);
+
+	}
+
+	public static String getUserRole(String token, String secretKey) {
 		return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
 			.getBody().get("userName", String.class);
 
@@ -28,9 +35,10 @@ public class JwtUtil {
 			.before(new Date());
 	}
 
-	public static String createJwt(String userName, String secretKey, Long expiredMs) {
+	public static String createJwt(MemberEntity member, String secretKey, Long expiredMs) {
 		Claims claims = Jwts.claims();
-		claims.put("username", userName);
+		claims.put("username", member.getName());
+		claims.put("role", member.getStatus());
 
 		return Jwts.builder()
 			.setClaims(claims)

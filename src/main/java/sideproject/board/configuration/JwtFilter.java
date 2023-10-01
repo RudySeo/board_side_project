@@ -56,12 +56,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		//유저 이름 꺼내기
 		String username = JwtUtil.getUserName(token, secretKey);
+		String role = JwtUtil.getUserRole(token, secretKey);
 		log.info(username + "유저 이름 확인");
 		// PrincipalDetails principalDetails = new PrincipalDetails()
 
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
 			null,
-			List.of(new SimpleGrantedAuthority("USER")));
+			List.of(new SimpleGrantedAuthority(role)));
 		//디테일
 		authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 		SecurityContextHolder.getContext().setAuthentication(authenticationToken);
