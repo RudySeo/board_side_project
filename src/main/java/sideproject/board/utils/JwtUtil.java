@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import sideproject.board.member.Entity.MemberEntity;
+import sideproject.board.member.domain.Entity.Member;
 
 public class JwtUtil {
 	@Value("${jwt.secretKey}")
@@ -35,7 +35,7 @@ public class JwtUtil {
 			.before(new Date());
 	}
 
-	public static String createJwt(MemberEntity member, String secretKey, Long expiredMs) {
+	public static String createJwt(Member member, String secretKey, Long expiredMs) {
 		Claims claims = Jwts.claims();
 		claims.put("username", member.getName());
 		claims.put("role", member.getStatus());

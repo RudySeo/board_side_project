@@ -1,4 +1,4 @@
-package sideproject.board.configuration;
+package sideproject.board.global.exception.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

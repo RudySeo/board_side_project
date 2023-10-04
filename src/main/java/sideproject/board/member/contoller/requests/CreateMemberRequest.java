@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sideproject.board.member.Entity.MemberEntity;
+import sideproject.board.member.domain.Entity.Member;
 
 @Data
 @AllArgsConstructor
@@ -25,13 +25,13 @@ public class CreateMemberRequest {
 	@NotNull
 	private int age;
 
-	public static CreateMemberRequest convertToCreateMemberReq(MemberEntity MemberEntity) {
+	public static CreateMemberRequest convertToCreateMemberReq(Member Member) {
 		return CreateMemberRequest.builder()
-			.id(MemberEntity.getId())
-			.email(MemberEntity.getEmail())
-			.password(MemberEntity.getPassword())
-			.name(MemberEntity.getName())
-			.age(MemberEntity.getAge())
+			.id(Member.getId())
+			.email(Member.getEmail())
+			.password(Member.getPassword())
+			.name(Member.getName())
+			.age(Member.getAge())
 			.build();
 	}
 }

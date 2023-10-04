@@ -1,4 +1,4 @@
-package sideproject.board.member.Entity;
+package sideproject.board.member.domain.Entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +26,7 @@ import sideproject.board.member.contoller.requests.CreateMemberRequest;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Builder
-public class MemberEntity extends BaseEntity {
+public class Member extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -46,8 +46,8 @@ public class MemberEntity extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private RoleTypeEnum status = RoleTypeEnum.USER;
 
-	public static MemberEntity convertToEntity(CreateMemberRequest request) {
-		return MemberEntity.builder()
+	public static Member convertToEntity(CreateMemberRequest request) {
+		return Member.builder()
 			.id(request.getId())
 			.email(request.getEmail())
 			.password(request.getPassword())

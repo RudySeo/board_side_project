@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import sideproject.board.member.Entity.MemberEntity;
+import sideproject.board.member.domain.Entity.Member;
 
 @Data
 @AllArgsConstructor
@@ -22,13 +22,13 @@ public class CreateMemberResponse {
 	@NotNull
 	private int age;
 
-	public static CreateMemberResponse convertToCreateMemberRes(MemberEntity MemberEntity) {
+	public static CreateMemberResponse convertToCreateMemberRes(Member Member) {
 		return CreateMemberResponse.builder()
-			.id(MemberEntity.getId())
-			.email(MemberEntity.getEmail())
-			.password(MemberEntity.getPassword())
-			.name(MemberEntity.getName())
-			.age(MemberEntity.getAge())
+			.id(Member.getId())
+			.email(Member.getEmail())
+			.password(Member.getPassword())
+			.name(Member.getName())
+			.age(Member.getAge())
 			.build();
 	}
 }

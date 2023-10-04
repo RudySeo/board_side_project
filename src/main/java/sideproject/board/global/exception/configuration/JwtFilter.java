@@ -1,4 +1,4 @@
-package sideproject.board.configuration;
+package sideproject.board.global.exception.configuration;
 
 import java.io.IOException;
 import java.util.List;

@@ -8,14 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import sideproject.board.exception.UserNotFoundException;
-import sideproject.board.member.Entity.MemberEntity;
-import sideproject.board.member.MemberRepository;
 import sideproject.board.member.contoller.requests.CreateMemberRequest;
 import sideproject.board.member.contoller.requests.UpdateMemberRequest;
 import sideproject.board.member.contoller.responses.CreateMemberResponse;
 import sideproject.board.member.contoller.responses.MemberListResponse;
 import sideproject.board.member.contoller.responses.UpdateMemberResponse;
+import sideproject.board.member.domain.Entity.Member;
+import sideproject.board.member.domain.Entity.MemberRepository;
 
 @RequiredArgsConstructor
 @Builder
@@ -26,9 +25,9 @@ public class MemberService {
 
 	@Transactional
 	public CreateMemberResponse createMember(CreateMemberRequest createMemberRequest) {
-		MemberEntity memberEntity = MemberEntity.convertToEntity(createMemberRequest);
+		Member member = Member.convertToEntity(createMemberRequest);
 
-		MemberEntity saveEntity = memberRepository.save(memberEntity);
+		Member saveEntity = memberRepository.save(member);
 
 		CreateMemberResponse createMemberResponse = CreateMemberResponse.convertToCreateMemberRes(saveEntity);
 		return createMemberResponse;
@@ -37,7 +36,7 @@ public class MemberService {
 	@Transactional(readOnly = true)
 	public List<MemberListResponse> getAllMember() {
 
-		List<MemberEntity> members = memberRepository.findAll();
+		List<Member> members = memberRepository.findAll();
 
 		List<MemberListResponse> result = members.stream()
 			.map(m -> new MemberListResponse(m.getId(), m.getEmail(), m.getName(), m.getAge()))
@@ -49,23 +48,23 @@ public class MemberService {
 	@Transactional(readOnly = true)
 	public MemberListResponse getMemberById(Long id) {
 
-		MemberEntity memberEntity = memberRepository.findById(id)
-			.orElseThrow(() -> new UserNotFoundException("해당 유저 아이디가 없습니다. id" + id));
+		Member member = memberRepository.findById(id)
+			.orElseThrow(() -> new memberNotFoundException("해당 유저 아이디가 없습니다. id" + id));
 
-		MemberListResponse memberListResponse = MemberListResponse.convertToGetMemberRes(memberEntity);
+		MemberListResponse memberListResponse = MemberListResponse.convertToGetMemberRes(member);
 		return memberListResponse;
 	}
 
 	@Transactional
 	public UpdateMemberResponse updateMember(Long id, UpdateMemberRequest updateMemberRequest) {
 
-		MemberEntity memberEntity = memberRepository.findById(id)
-			.orElseThrow(() -> new UserNotFoundException("해당 유저 아이디가 없습니다. id" + id));
+		Member member = memberRepository.findById(id)
+			.orElseThrow(() -> new memberNotFoundException("해당 유저 아이디가 없습니다. id" + id));
 
-		memberEntity.setName(updateMemberRequest.getName());
-		memberEntity.setAge(updateMemberRequest.getAge());
+		member.setName(updateMemberRequest.getName());
+		member.setAge(updateMemberRequest.getAge());
 
-		MemberEntity updatedEntity = memberRepository.save(memberEntity);
+		Member updatedEntity = memberRepository.save(member);
 
 		UpdateMemberResponse updateMemberResponse = UpdateMemberResponse.convertToUpdateMemberRes(updatedEntity);
 		return updateMemberResponse;
@@ -76,10 +75,10 @@ public class MemberService {
 	@Transactional
 	public boolean DeleteMember(Long id) {
 
-		MemberEntity memberEntity = memberRepository.findById(id)
-			.orElseThrow(() -> new UserNotFoundException("해당 유저 아이디가 없습니다. id" + id));
+		Member member = memberRepository.findById(id)
+			.orElseThrow(() -> new memberNotFoundException("해당 유저 아이디가 없습니다. id" + id));
 
-		memberRepository.delete(memberEntity);
+		memberRepository.delete(member);
 		return true;
 
 	}

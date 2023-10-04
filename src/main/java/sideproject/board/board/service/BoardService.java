@@ -1,6 +1,6 @@
 package sideproject.board.board.service;
 
-import static sideproject.board.board.exception.ExceptionCode.*;
+import static sideproject.board.global.exception.ErrorCode.*;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.domain.BoardRepository;
 import sideproject.board.board.domain.entity.Board;
-import sideproject.board.board.exception.BadRequestException;
+import sideproject.board.global.exception.BadRequestException;
 
 @Service
 @RequiredArgsConstructor

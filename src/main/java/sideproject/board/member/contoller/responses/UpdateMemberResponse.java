@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sideproject.board.member.Entity.MemberEntity;
+import sideproject.board.member.domain.Entity.Member;
 
 @Data
 @Builder
@@ -19,11 +19,11 @@ public class UpdateMemberResponse {
 	@NotNull
 	private int age;
 
-	public static UpdateMemberResponse convertToUpdateMemberRes(MemberEntity MemberEntity) {
+	public static UpdateMemberResponse convertToUpdateMemberRes(Member Member) {
 		return UpdateMemberResponse.builder()
-			.id(MemberEntity.getId())
-			.name(MemberEntity.getName())
-			.age(MemberEntity.getAge())
+			.id(Member.getId())
+			.name(Member.getName())
+			.age(Member.getAge())
 			.build();
 	}
 }
