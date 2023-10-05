@@ -25,13 +25,13 @@ public class CreateMemberRequest {
 	@NotNull
 	private int age;
 
-	public static CreateMemberRequest convertToCreateMemberReq(Member member) {
-		return CreateMemberRequest.builder()
-			.id(member.getId())
-			.email(member.getEmail())
-			.password(member.getPassword())
-			.name(member.getName())
-			.age(member.getAge())
+	public Member toEntity() {
+		return Member.builder()
+			.id(getId())
+			.email(getEmail())
+			.password(getPassword())
+			.name(getName())
+			.age(getAge())
 			.build();
 	}
 }

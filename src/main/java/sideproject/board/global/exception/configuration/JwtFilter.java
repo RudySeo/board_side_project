@@ -41,7 +41,7 @@ public class JwtFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
 
-		final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION).substring(7);
+		final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 		log.info(authorization + "해더에서 토큰 값 가지고오기");
 
 		//토큰 안 보내면 오류

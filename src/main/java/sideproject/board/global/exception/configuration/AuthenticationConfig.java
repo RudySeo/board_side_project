@@ -19,8 +19,9 @@ import sideproject.board.member.domain.Entity.MemberRepository;
 public class AuthenticationConfig {
 
 	private final MemberRepository memberRepository;
+
 	@Value("${jwt.secretKey}")
-	private final String secretKey;
+	private String secretKey;
 
 
 	@Bean
@@ -31,8 +32,8 @@ public class AuthenticationConfig {
 			.cors().and()
 			.formLogin().disable()
 			.authorizeRequests()
-			.antMatchers("/member").permitAll()
-			.antMatchers(HttpMethod.POST, "/user").authenticated()
+			.antMatchers("/user").permitAll()
+			.antMatchers(HttpMethod.POST, "/board").authenticated()
 			.and()
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

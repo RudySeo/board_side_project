@@ -9,18 +9,23 @@ import sideproject.board.member.domain.Entity.Member;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateMemberResponse {
+public class MemberResponse {
+
 	private Long id;
+
+	private String email;
 
 	private String name;
 
 	private int age;
 
 	@Builder
-	public UpdateMemberResponse(Member member) {
-		this.id = id;
-		this.name = name;
-		this.age = age;
+	public MemberResponse(Member member) {
+		this.id = member.getId();
+		this.email = member.getEmail();
+		this.name = member.getName();
+		this.age = member.getAge();
 	}
+
 
 }

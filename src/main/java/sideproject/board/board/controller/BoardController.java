@@ -67,8 +67,9 @@ public class BoardController {
 
 	@DeleteMapping("/board/{id}")
 	public String deleteBoard(@PathVariable Long id) {
-		boardService.deleteBoard(id);
-		return "게시물이 삭제되었습니다.";
 
+		boardService.deleteBoard(id);
+
+		return "게시물이 삭제되었습니다.";
 	}
 }

@@ -15,13 +15,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import sideproject.board.common.BaseEntity;
-import sideproject.board.member.contoller.requests.CreateMemberRequest;
 
 @Entity
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -46,14 +43,10 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private RoleTypeEnum status = RoleTypeEnum.USER;
 
-	public static Member convertToEntity(CreateMemberRequest request) {
-		return Member.builder()
-			.id(request.getId())
-			.email(request.getEmail())
-			.password(request.getPassword())
-			.name(request.getName())
-			.age(request.getAge())
-			.build();
+	public void update(Long id, String name, int age) {
+		this.id = id;
+		this.name = name;
+		this.age = age;
 	}
 
 }
