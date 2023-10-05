@@ -1,5 +1,7 @@
 package sideproject.board.member.service;
 
+import static sideproject.board.global.exception.ErrorCode.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import sideproject.board.global.exception.ClientException;
 import sideproject.board.member.contoller.requests.CreateMemberRequest;
 import sideproject.board.member.contoller.requests.UpdateMemberRequest;
 import sideproject.board.member.contoller.responses.CreateMemberResponse;
@@ -49,7 +52,7 @@ public class MemberService {
 	public MemberListResponse getMemberById(Long id) {
 
 		Member member = memberRepository.findById(id)
-			.orElseThrow(() -> new memberNotFoundException("해당 유저 아이디가 없습니다. id" + id));
+			.orElseThrow(() -> new ClientException(NOT_FOUND_MEMBER_ID));
 
 		MemberListResponse memberListResponse = MemberListResponse.convertToGetMemberRes(member);
 		return memberListResponse;
@@ -59,7 +62,7 @@ public class MemberService {
 	public UpdateMemberResponse updateMember(Long id, UpdateMemberRequest updateMemberRequest) {
 
 		Member member = memberRepository.findById(id)
-			.orElseThrow(() -> new memberNotFoundException("해당 유저 아이디가 없습니다. id" + id));
+			.orElseThrow(() -> new ClientException(NOT_FOUND_MEMBER_ID));
 
 		member.setName(updateMemberRequest.getName());
 		member.setAge(updateMemberRequest.getAge());
@@ -76,7 +79,7 @@ public class MemberService {
 	public boolean DeleteMember(Long id) {
 
 		Member member = memberRepository.findById(id)
-			.orElseThrow(() -> new memberNotFoundException("해당 유저 아이디가 없습니다. id" + id));
+			.orElseThrow(() -> new ClientException(NOT_FOUND_MEMBER_ID));
 
 		memberRepository.delete(member);
 		return true;

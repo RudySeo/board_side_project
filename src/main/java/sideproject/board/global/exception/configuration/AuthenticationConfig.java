@@ -11,16 +11,17 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
-import sideproject.board.member.service.MemberService;
+import sideproject.board.member.domain.Entity.MemberRepository;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class AuthenticationConfig {
 
-	private final MemberService memberService;
+	private final MemberRepository memberRepository;
 	@Value("${jwt.secretKey}")
-	private String secretKey;
+	private final String secretKey;
+
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -36,7 +37,7 @@ public class AuthenticationConfig {
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
-			.addFilterBefore(new JwtFilter(memberService, secretKey), UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(new JwtFilter(memberRepository, secretKey), UsernamePasswordAuthenticationFilter.class)
 			.build();
 	}
 }

@@ -1,5 +1,7 @@
 package sideproject.board.comment.service;
 
+import static sideproject.board.global.exception.ErrorCode.*;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import sideproject.board.comment.model.entity.Comment;
 import sideproject.board.comment.model.repository.CommentRepositoy;
+import sideproject.board.global.exception.ClientException;
 
 @Service
 @RequiredArgsConstructor
@@ -31,14 +34,14 @@ public class CommentService {
 	@Transactional(readOnly = true)
 	public Comment getOneComment(Long id) {
 
-		return commentRepositoy.findById(id).orElseThrow(() -> new IllegalArgumentException());
+		return commentRepositoy.findById(id).orElseThrow(() -> new ClientException(NOT_FOUND_MEMBER_ID));
 
 	}
 
 	@Transactional
 	public Comment updateComment(Long id, Comment request) {
 
-		Comment comment = commentRepositoy.findById(id).orElseThrow(() -> new IllegalArgumentException());
+		Comment comment = commentRepositoy.findById(id).orElseThrow(() -> new ClientException(NOT_FOUND_MEMBER_ID));
 
 		comment.update(id, request.getContent());
 
@@ -50,9 +53,9 @@ public class CommentService {
 	@Transactional
 	public void deleteBoard(Long id) {
 		if (!commentRepositoy.existsById(id)) {
-			throw new IllegalArgumentException("게시물을 찾을 수 없습니다.");
+			throw new ClientException(NOT_FOUND_BOARD_ID);
 		}
 		commentRepositoy.deleteById(id);
 	}
-	
+
 }

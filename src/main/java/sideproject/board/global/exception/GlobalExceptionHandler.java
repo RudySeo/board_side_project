@@ -9,8 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-	@ExceptionHandler(BadRequestException.class)
-	public ResponseEntity<ErrorResponse> handleBadRequestException(BadRequestException e) {
+	@ExceptionHandler(ClientException.class)
+	public ResponseEntity<ErrorResponse> handleBadRequestException(ClientException e) {
 
 		log.warn(e.getMessage(), e);
 		return ResponseEntity.status(e.getHttpStatus())
