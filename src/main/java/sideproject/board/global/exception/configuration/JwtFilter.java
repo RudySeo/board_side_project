@@ -25,7 +25,7 @@ import sideproject.board.global.exception.ClientException;
 import sideproject.board.global.exception.ErrorCode;
 import sideproject.board.member.domain.Entity.Member;
 import sideproject.board.member.domain.Entity.MemberRepository;
-import sideproject.board.member.domain.Entity.RoleTypeEnum;
+import sideproject.board.member.domain.Entity.Role;
 import sideproject.board.utils.JwtUtil;
 
 @RequiredArgsConstructor
@@ -69,7 +69,7 @@ public class JwtFilter extends OncePerRequestFilter {
 			Member findUserEmail = memberRepository.findByEmail(email)
 				.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_EMAIL_ID));
 
-			RoleTypeEnum userStatus = findUserEmail.getStatus();
+			Role userStatus = findUserEmail.getStatus();
 			log.info(userStatus + "유저 역할 확인");
 
 			SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userStatus.toString());

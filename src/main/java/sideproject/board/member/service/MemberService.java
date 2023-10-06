@@ -10,14 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import sideproject.board.global.exception.ClientException;
 import sideproject.board.member.contoller.requests.UpdateMemberRequest;
 import sideproject.board.member.domain.Entity.Member;
 import sideproject.board.member.domain.Entity.MemberRepository;
-import sideproject.board.member.domain.Entity.RoleTypeEnum;
+import sideproject.board.member.domain.Entity.Role;
 
 @RequiredArgsConstructor
 @Builder
+@Slf4j
 @Service
 public class MemberService {
 
@@ -33,7 +35,7 @@ public class MemberService {
 			.password(bcrypt.encode(request.getPassword()))
 			.name(request.getName())
 			.age(request.getAge())
-			.status(RoleTypeEnum.USER)
+			.status(Role.USER)
 			.build();
 
 		return memberRepository.save(member);
