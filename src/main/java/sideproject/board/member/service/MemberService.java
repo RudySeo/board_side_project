@@ -4,6 +4,7 @@ import static sideproject.board.global.exception.ErrorCode.*;
 
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import sideproject.board.global.exception.ClientException;
 import sideproject.board.member.contoller.requests.UpdateMemberRequest;
 import sideproject.board.member.domain.Entity.Member;
 import sideproject.board.member.domain.Entity.MemberRepository;
+import sideproject.board.member.domain.Entity.RoleTypeEnum;
 
 @RequiredArgsConstructor
 @Builder
@@ -21,13 +23,20 @@ public class MemberService {
 
 	private final MemberRepository memberRepository;
 
+	private final BCryptPasswordEncoder bcrypt;
+
 	@Transactional
 	public Member signUp(Member request) {
 
+		Member member = Member.builder()
+			.email(request.getEmail())
+			.password(bcrypt.encode(request.getPassword()))
+			.name(request.getName())
+			.age(request.getAge())
+			.status(RoleTypeEnum.USER)
+			.build();
 
-		Member saveEntity = memberRepository.save(request);
-
-		return saveEntity;
+		return memberRepository.save(member);
 	}
 
 	@Transactional(readOnly = true)

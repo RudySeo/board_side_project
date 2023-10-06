@@ -43,6 +43,7 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private RoleTypeEnum status = RoleTypeEnum.USER;
 
+
 	public void update(Long id, String name, int age) {
 		this.id = id;
 		this.name = name;
