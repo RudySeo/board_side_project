@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import sideproject.board.member.contoller.requests.CreateMemberRequest;
+import sideproject.board.member.contoller.requests.LoginMemberRequest;
 import sideproject.board.member.contoller.requests.UpdateMemberRequest;
 import sideproject.board.member.contoller.responses.MemberResponse;
 import sideproject.board.member.contoller.responses.UpdateMemberResponse;
@@ -37,6 +38,13 @@ public class MemberContoller {
 		Member member = memberService.signUp(request.toEntity());
 
 		return MemberResponse.builder().member(member).build();
+	}
+
+	@PostMapping("/login")
+	public String login(
+		@RequestBody @Valid LoginMemberRequest request) {
+
+		return memberService.login(request);
 	}
 
 	@GetMapping("/user")

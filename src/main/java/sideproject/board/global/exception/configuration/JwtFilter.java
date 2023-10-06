@@ -1,7 +1,5 @@
 package sideproject.board.global.exception.configuration;
 
-import static sideproject.board.global.exception.ErrorCode.*;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -20,7 +18,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import sideproject.board.global.exception.AuthException;
 import sideproject.board.global.exception.ClientException;
 import sideproject.board.global.exception.ErrorCode;
 import sideproject.board.member.domain.Entity.Member;
@@ -61,31 +58,31 @@ public class JwtFilter extends OncePerRequestFilter {
 		}
 
 
-		try {
-			//유저 이름 꺼내기
-			String email = JwtUtil.getEmail(token, secretKey);
-			log.info(email + "유저 이메일 확인");
+		// try {
+		//유저 이름 꺼내기
+		String email = JwtUtil.getEmail(token, secretKey);
+		log.info(email + "유저 이메일 확인");
 
-			Member findUserEmail = memberRepository.findByEmail(email)
-				.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_EMAIL_ID));
+		Member findUserEmail = memberRepository.findByEmail(email)
+			.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_EMAIL_ID));
 
-			Role userStatus = findUserEmail.getStatus();
-			log.info(userStatus + "유저 역할 확인");
+		Role userStatus = findUserEmail.getStatus();
+		log.info(userStatus + "유저 역할 확인");
 
-			SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userStatus.toString());
+		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userStatus.toString());
 
-			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email,
-				null,
-				List.of(authority));
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email,
+			null,
+			List.of(authority));
 
-			//디테일
-			authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-			SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-			filterChain.doFilter(request, response);
+		//디테일
+		authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+		SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+		filterChain.doFilter(request, response);
 
-		} catch (Exception e) {
-			throw new AuthException(INVALID_AUTHORIZATION_CODE);
-		}
+		// } catch (Exception e) {
+		// 	throw new AuthException(INVALID_AUTHORIZATION_CODE);
+		// }
 
 
 	}
