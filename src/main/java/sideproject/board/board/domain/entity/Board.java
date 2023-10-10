@@ -1,11 +1,17 @@
 package sideproject.board.board.domain.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,6 +20,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import sideproject.board.comment.model.entity.Comment;
+import sideproject.board.member.domain.Entity.Member;
 
 @Entity
 @Getter
@@ -40,6 +48,14 @@ public class Board {
 	private Long like;
 	@Column
 	private Long price;
+
+	@ManyToOne
+	@JoinColumn(name = "memberId")
+	private Member member;
+
+	@OneToMany(mappedBy = "board")
+	private List<Comment> comments = new ArrayList<>();
+
 
 	public void update(Long id, String title, String content, Long price) {
 		this.id = id;

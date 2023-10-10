@@ -1,5 +1,8 @@
 package sideproject.board.member.domain.Entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -8,6 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -15,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sideproject.board.board.domain.entity.Board;
 import sideproject.board.common.BaseEntity;
 
 @Entity
@@ -40,8 +45,14 @@ public class Member extends BaseEntity {
 	@Column(nullable = false)
 	private int age;
 
+	@Column(nullable = false)
+	private int money;
+
 	@Enumerated(EnumType.STRING)
 	private Role status;
+
+	@OneToMany(mappedBy = "member")
+	private List<Board> boards = new ArrayList<>();
 
 
 	public void update(Long id, String name, int age) {
