@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import sideproject.board.board.domain.entity.Board;
 import sideproject.board.comment.controller.dto.requests.CreateCommentRequest;
 import sideproject.board.common.BaseEntity;
+import sideproject.board.member.domain.Entity.Member;
 
 @Entity
 @Getter
@@ -33,6 +34,10 @@ public class Comment extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "boardId")
 	private Board board;
+
+	@ManyToOne
+	@JoinColumn(name = "memberId")
+	private Member member;
 
 
 

@@ -20,6 +20,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sideproject.board.board.domain.entity.Board;
+import sideproject.board.comment.model.entity.Comment;
 import sideproject.board.common.BaseEntity;
 
 @Entity
@@ -50,6 +51,10 @@ public class Member extends BaseEntity {
 
 	@Enumerated(EnumType.STRING)
 	private Role status;
+
+	@OneToMany(mappedBy = "member")
+	private List<Comment> comment = new ArrayList<>();
+
 
 	@OneToMany(mappedBy = "member")
 	private List<Board> boards = new ArrayList<>();
