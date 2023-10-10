@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.domain.BoardRepository;
 import sideproject.board.board.domain.entity.Board;
+import sideproject.board.global.exception.ClientException;
 
 @SpringBootTest
 class BoardServiceTest {
@@ -97,7 +98,7 @@ class BoardServiceTest {
 		given(boardRepository.existsById(1L)).willReturn(false);
 
 		// deleteBoard 메서드 호출
-		assertThrows(CustomException.class, () -> boardService.deleteBoard(1L));
+		assertThrows(ClientException.class, () -> boardService.deleteBoard(1L));
 	}
 
 }
