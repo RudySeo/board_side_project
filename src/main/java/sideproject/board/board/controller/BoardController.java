@@ -3,6 +3,7 @@ package sideproject.board.board.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,9 +29,9 @@ public class BoardController {
 	private final BoardService boardService;
 
 	@PostMapping("/board")
-	public BoardResponse saveBoard(@RequestBody CreateBoardRequest request) {
+	public BoardResponse saveBoard(Authentication authentication, @RequestBody CreateBoardRequest request) {
 
-		Board board = boardService.saveBoard(request.toEntity());
+		Board board = boardService.saveBoard(request.toEntity(), authentication.getName());
 
 		return BoardResponse.builder().board(board).build();
 	}
@@ -42,7 +43,7 @@ public class BoardController {
 
 		List<BoardResponse> response = board.stream()
 			.map(
-				m -> new BoardResponse(m.getId(), m.getTitle(), m.getContent(),
+				m -> new BoardResponse(m.getId(), m.getMember().getName(), m.getTitle(), m.getContent(),
 					m.getView(), m.getLike(), m.getPrice()))
 			.collect(Collectors.toList());
 

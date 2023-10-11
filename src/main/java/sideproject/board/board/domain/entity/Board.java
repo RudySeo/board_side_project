@@ -57,6 +57,14 @@ public class Board {
 	private List<Comment> comments = new ArrayList<>();
 
 
+	public void create(Member member, String title, String content, Long price) {
+		this.member = member;
+		this.title = title;
+		this.content = content;
+		this.price = price;
+
+	}
+
 	public void update(Long id, String title, String content, Long price) {
 		this.id = id;
 		this.title = title;
