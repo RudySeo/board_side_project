@@ -1,5 +1,6 @@
 package sideproject.board.member.domain.Entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,9 @@ public class Member extends BaseEntity {
 	private int age;
 
 	@Column(nullable = false)
-	private int money;
+	private int money = 0;
+
+	private LocalDate lastLoginDate = null;
 
 	@Enumerated(EnumType.STRING)
 	private Role status;
@@ -59,6 +62,13 @@ public class Member extends BaseEntity {
 	@OneToMany(mappedBy = "member")
 	private List<Board> boards = new ArrayList<>();
 
+	public LocalDate setLastLoginDate(LocalDate time) {
+		return this.lastLoginDate = time;
+	}
+
+	public int setPoint(int money) {
+		return this.money += money;
+	}
 
 	public void update(Long id, String name, int age) {
 		this.id = id;

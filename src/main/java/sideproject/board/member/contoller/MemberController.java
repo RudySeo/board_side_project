@@ -26,7 +26,7 @@ import sideproject.board.member.service.MemberService;
 @RestController
 @RequiredArgsConstructor
 @Builder
-public class MemberContoller {
+public class MemberController {
 
 	private final MemberService memberService;
 
@@ -51,11 +51,9 @@ public class MemberContoller {
 	public List<MemberResponse> getAllMember() {
 		List<Member> member = memberService.getAllMember();
 
-		List<MemberResponse> response = member.stream()
-			.map(m -> new MemberResponse(m.getId(), m.getEmail(), m.getName(), m.getAge()))
+		return member.stream()
+			.map(m -> new MemberResponse(m.getId(), m.getEmail(), m.getName(), m.getAge(), m.getMoney()))
 			.collect(Collectors.toList());
-
-		return response;
 	}
 
 	@GetMapping("/user/{id}")
