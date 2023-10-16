@@ -26,8 +26,8 @@ public class BoardService {
 	private final MemberRepository memberRepository;
 
 	@Transactional
-	public Board saveBoard(Board request, String memberId) {
-		Member findMember = memberRepository.findByEmail(memberId)
+	public Board saveBoard(Board request, String email) {
+		Member findMember = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new ClientException(NOT_FOUND_MEMBER_ID));
 		Board board = new Board();
 		board.create(findMember, request.getTitle(), request.getContent(), request.getPrice());
