@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sideproject.board.global.exception.ClientException;
+import sideproject.board.global.exception.LoginException;
 import sideproject.board.member.contoller.requests.LoginMemberRequest;
 import sideproject.board.member.contoller.requests.UpdateMemberRequest;
 import sideproject.board.member.domain.Entity.Member;
@@ -57,17 +58,14 @@ public class MemberService {
 			.orElseThrow(() -> new ClientException(USER_NOT_FOUND));
 
 		if (!bcrypt.matches(request.getPassword(), member.getPassword())) {
-			throw new ClientException(USER_NOT_FOUND);
+			throw new LoginException(INVALID_AUTHORIZATION_CODE);
 		}
 
-		if (member.getLastLoginDate() == null) {
-			member.setPoint(1000);
+		LocalDate lastLoginTime = member.getLastLoginDate();
+		if (lastLoginTime == null || lastLoginTime.isAfter(currentTime)) {
+			member.addMoney(1000);
 		}
-
-		LocalDate loginTime = member.setLastLoginDate(currentTime);
-		if (loginTime.isAfter(currentTime)) {
-			member.setPoint(1000);
-		}
+		member.setLastLoginDate(currentTime);
 
 
 		return JwtUtil.createJwt(member.getEmail(), secretKey, expireTime);

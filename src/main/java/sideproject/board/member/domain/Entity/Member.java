@@ -66,7 +66,7 @@ public class Member extends BaseEntity {
 		return this.lastLoginDate = time;
 	}
 
-	public int setPoint(int money) {
+	public int addMoney(int money) {
 		return this.money += money;
 	}
 
