@@ -13,7 +13,6 @@ import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.domain.BoardRepository;
 import sideproject.board.board.domain.entity.Board;
 import sideproject.board.global.exception.ClientException;
-import sideproject.board.member.domain.Entity.Member;
 import sideproject.board.member.domain.Entity.MemberRepository;
 
 @Service
@@ -26,11 +25,11 @@ public class BoardService {
 	private final MemberRepository memberRepository;
 
 	@Transactional
-	public Board saveBoard(Board request, String email) {
-		Member findMember = memberRepository.findByEmail(email)
-			.orElseThrow(() -> new ClientException(NOT_FOUND_MEMBER_ID));
+	public Board saveBoard(Board request, String username) {
+
 		Board board = new Board();
-		board.create(findMember, request.getTitle(), request.getContent(), request.getPrice());
+		log.info(username + "유저이름확인");
+		board.create(username, request.getTitle(), request.getContent(), request.getPrice());
 
 		return boardRepository.save(board);
 	}
