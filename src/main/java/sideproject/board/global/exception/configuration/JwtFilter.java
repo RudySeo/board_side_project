@@ -63,11 +63,19 @@ public class JwtFilter extends OncePerRequestFilter {
 		String email = JwtUtil.getEmail(token, secretKey);
 		log.info(email + "유저 이메일 확인");
 
-		Member findUserEmail = memberRepository.findByEmail(email)
+		//ThreadLocal
+
+
+		Member member = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_EMAIL_ID));
 
-		Role userStatus = findUserEmail.getStatus();
+		// ThreadLocal 값 저장
+		ThreadLocalContext.set(member);
+
+		Role userStatus = member.getStatus();
 		log.info(userStatus + "유저 역할 확인");
+
+
 
 		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userStatus.toString());
 

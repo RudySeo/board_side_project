@@ -12,24 +12,28 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import sideproject.board.board.controller.dto.requests.CreateBoardRequest;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.controller.dto.responses.BoardResponse;
 import sideproject.board.board.controller.dto.responses.UpdateResponse;
 import sideproject.board.board.domain.entity.Board;
 import sideproject.board.board.service.BoardService;
+import sideproject.board.global.exception.configuration.ThreadLocalContext;
+import sideproject.board.member.domain.Entity.Member;
 
 @RestController
 @RequiredArgsConstructor
-@Builder
+@Slf4j
 public class BoardController {
 
 	private final BoardService boardService;
 
 	@PostMapping("/board")
 	public BoardResponse saveBoard(Authentication authentication, @RequestBody CreateBoardRequest request) {
+		Member memberLocal = ThreadLocalContext.get();
+		log.info(memberLocal.getEmail() + "이름확인중입니다  @@@!!");
 
 		Board board = boardService.saveBoard(request.toEntity(), authentication.getName());
 
