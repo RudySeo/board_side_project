@@ -1,4 +1,4 @@
 package sideproject.board.board.domain;
 
-public interface BoardCustom {
+public interface BoardRepositoryCustom {
 }

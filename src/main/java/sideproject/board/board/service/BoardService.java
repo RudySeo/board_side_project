@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
-import sideproject.board.board.domain.BoardRepository;
+import sideproject.board.board.domain.BoardRepositoryRepository;
 import sideproject.board.board.domain.entity.Board;
 import sideproject.board.global.exception.ClientException;
 import sideproject.board.member.domain.Entity.MemberRepository;
@@ -20,7 +20,7 @@ import sideproject.board.member.domain.Entity.MemberRepository;
 @Slf4j
 public class BoardService {
 
-	private final BoardRepository boardRepository;
+	private final BoardRepositoryRepository boardRepository;
 
 	private final MemberRepository memberRepository;
 
