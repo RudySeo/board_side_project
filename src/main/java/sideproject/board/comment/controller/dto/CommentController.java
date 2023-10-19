@@ -16,6 +16,8 @@ import sideproject.board.comment.controller.dto.requests.CreateCommentRequest;
 import sideproject.board.comment.controller.dto.responses.CommentResponse;
 import sideproject.board.comment.model.entity.Comment;
 import sideproject.board.comment.service.CommentService;
+import sideproject.board.global.exception.configuration.ThreadLocalContext;
+import sideproject.board.member.domain.Entity.Member;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,10 +25,11 @@ public class CommentController {
 
 	private final CommentService commentService;
 
-	@PostMapping("/comment")
-	public CommentResponse createComment(@RequestBody CreateCommentRequest request) {
+	@PostMapping("/comment/{boardId}")
+	public CommentResponse createComment(@PathVariable Long boardId, @RequestBody CreateCommentRequest request) {
+		Member memberLocal = ThreadLocalContext.get();
 
-		Comment comment = commentService.createComment(request.toEntity());
+		Comment comment = commentService.createComment(memberLocal, boardId, request);
 		return CommentResponse.builder().comment(comment).build();
 	}
 
@@ -36,7 +39,9 @@ public class CommentController {
 		List<Comment> comment = commentService.getAllComment();
 
 		List<CommentResponse> result = comment.stream()
-			.map(m -> new CommentResponse(m.getId(), m.getContent(), m.getCreatedAt(), m.getUpdatedAt()))
+			.map(m -> new CommentResponse(m.getId(), m.getMember().getName(), m.getBoard().getId(), m.getContent(),
+				m.getCreatedAt(),
+				m.getUpdatedAt()))
 			.collect(Collectors.toList());
 
 		return result;

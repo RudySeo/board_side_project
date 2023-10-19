@@ -53,4 +53,10 @@ public class Comment extends BaseEntity {
 		this.content = content;
 	}
 
+	public void create(String content, Board board, Member memberLocal) {
+		this.board = board;
+		this.member = memberLocal;
+		this.content = content;
+	}
+
 }

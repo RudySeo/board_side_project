@@ -13,7 +13,12 @@ public class CommentResponse {
 
 	private Long id;
 
+	private String writer;
+
+	private Long boardId;
+
 	private String content;
+
 
 	private LocalDateTime createdAt;
 
@@ -22,6 +27,8 @@ public class CommentResponse {
 	@Builder
 	public CommentResponse(Comment comment) {
 		this.id = comment.getId();
+		this.writer = comment.getMember().getName();
+		this.boardId = comment.getBoard().getId();
 		this.content = comment.getContent();
 		this.createdAt = comment.getCreatedAt();
 		this.updatedAt = comment.getUpdatedAt();
