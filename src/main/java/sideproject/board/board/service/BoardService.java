@@ -8,21 +8,30 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
-import sideproject.board.board.domain.BoardRepository;
+import sideproject.board.board.domain.BoardRepositoryRepository;
 import sideproject.board.board.domain.entity.Board;
 import sideproject.board.global.exception.ClientException;
+import sideproject.board.member.domain.Entity.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BoardService {
 
-	private final BoardRepository boardRepository;
+	private final BoardRepositoryRepository boardRepository;
+
+	private final MemberRepository memberRepository;
 
 	@Transactional
-	public Board saveBoard(Board request) {
+	public Board saveBoard(Board request, String username) {
 
-		return boardRepository.save(request);
+		Board board = new Board();
+		log.info(username + "유저이름확인");
+		board.create(username, request.getTitle(), request.getContent(), request.getPrice());
+
+		return boardRepository.save(board);
 	}
 
 	@Transactional(readOnly = true)

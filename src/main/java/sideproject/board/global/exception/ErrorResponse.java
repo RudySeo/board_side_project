@@ -1,7 +1,5 @@
 package sideproject.board.global.exception;
 
-import org.springframework.http.HttpStatus;
-
-public record ErrorResponse(HttpStatus httpStatus, String message) {
+public record ErrorResponse(int httpStatus, String message) {
 
 }

@@ -19,12 +19,15 @@ public class MemberResponse {
 
 	private int age;
 
+	private int money;
+
 	@Builder
 	public MemberResponse(Member member) {
 		this.id = member.getId();
 		this.email = member.getEmail();
 		this.name = member.getName();
 		this.age = member.getAge();
+		this.money = member.getMoney();
 	}
 
 

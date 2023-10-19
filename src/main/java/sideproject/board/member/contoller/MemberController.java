@@ -52,7 +52,7 @@ public class MemberController {
 		List<Member> member = memberService.getAllMember();
 
 		return member.stream()
-			.map(m -> new MemberResponse(m.getId(), m.getEmail(), m.getName(), m.getAge()))
+			.map(m -> new MemberResponse(m.getId(), m.getEmail(), m.getName(), m.getAge(), m.getMoney()))
 			.collect(Collectors.toList());
 	}
 
