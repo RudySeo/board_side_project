@@ -13,6 +13,8 @@ public class BoardResponse {
 
 	private Long id;
 
+	private String writer;
+	
 	private String title;
 
 	private String content;
@@ -23,9 +25,11 @@ public class BoardResponse {
 
 	private Long price;
 
+
 	@Builder
 	public BoardResponse(Board board) {
 		this.id = board.getId();
+		this.writer = board.getWriter();
 		this.title = board.getTitle();
 		this.content = board.getContent();
 		this.view = board.getView();
