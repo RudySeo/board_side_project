@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.controller.dto.responses.BoardResponse;
 import sideproject.board.board.controller.dto.responses.UpdateResponse;
 import sideproject.board.board.domain.entity.Board;
+import sideproject.board.board.domain.entity.BoardType;
 import sideproject.board.board.service.BoardService;
 import sideproject.board.global.exception.configuration.ThreadLocalContext;
 import sideproject.board.member.domain.Entity.Member;
@@ -39,13 +41,13 @@ public class BoardController {
 	}
 
 	@GetMapping("/board")
-	public List<BoardResponse> getAllBoard() {
+	public List<BoardResponse> getAllBoard(@RequestParam BoardType type) {
 
-		List<Board> board = boardService.getAllBoard();
+		List<Board> board = boardService.getAllBoard(type);
 
 		List<BoardResponse> response = board.stream()
 			.map(
-				m -> new BoardResponse(m.getId(), m.getWriter(), m.getTitle(), m.getContent(),
+				m -> new BoardResponse(m.getId(), m.getType(), m.getWriter(), m.getTitle(), m.getContent(),
 					m.getView(), m.getLike(), m.getPrice()))
 			.collect(Collectors.toList());
 

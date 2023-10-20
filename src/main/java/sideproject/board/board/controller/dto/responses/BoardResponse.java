@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import sideproject.board.board.domain.entity.Board;
+import sideproject.board.board.domain.entity.BoardType;
 
 @Data
 @AllArgsConstructor
@@ -13,8 +14,10 @@ public class BoardResponse {
 
 	private Long id;
 
+	private BoardType type;
+
 	private String writer;
-	
+
 	private String title;
 
 	private String content;
@@ -29,6 +32,7 @@ public class BoardResponse {
 	@Builder
 	public BoardResponse(Board board) {
 		this.id = board.getId();
+		this.type = board.getType();
 		this.writer = board.getWriter();
 		this.title = board.getTitle();
 		this.content = board.getContent();

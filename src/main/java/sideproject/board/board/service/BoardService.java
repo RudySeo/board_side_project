@@ -10,8 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
-import sideproject.board.board.domain.BoardRepositoryRepository;
 import sideproject.board.board.domain.entity.Board;
+import sideproject.board.board.domain.entity.BoardType;
+import sideproject.board.board.domain.entity.repository.BoardRepository;
 import sideproject.board.global.exception.ClientException;
 import sideproject.board.member.domain.Entity.MemberRepository;
 
@@ -20,7 +21,7 @@ import sideproject.board.member.domain.Entity.MemberRepository;
 @Slf4j
 public class BoardService {
 
-	private final BoardRepositoryRepository boardRepository;
+	private final BoardRepository boardRepository;
 
 	private final MemberRepository memberRepository;
 
@@ -28,16 +29,16 @@ public class BoardService {
 	public Board saveBoard(Board request, String username) {
 
 		Board board = new Board();
-		log.info(username + "유저이름확인");
-		board.create(username, request.getTitle(), request.getContent(), request.getPrice());
+
+		board.create(username, request.getType(), request.getTitle(), request.getContent(), request.getPrice());
 
 		return boardRepository.save(board);
 	}
 
 	@Transactional(readOnly = true)
-	public List<Board> getAllBoard() {
+	public List<Board> getAllBoard(BoardType type) {
 
-		return boardRepository.findAll();
+		return boardRepository.findBoardTypeAll(type);
 	}
 
 	@Transactional(readOnly = true)
