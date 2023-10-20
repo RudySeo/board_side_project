@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,6 +42,9 @@ public class Board {
 
 	@Column(nullable = false, length = 10000)
 	private String content;
+
+	@Enumerated(EnumType.STRING)
+	private BoardType type;
 
 	@Column
 	private Long view;
