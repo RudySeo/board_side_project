@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import sideproject.board.board.Sort;
 import sideproject.board.board.controller.dto.requests.CreateBoardRequest;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.controller.dto.responses.BoardResponse;
@@ -50,7 +51,7 @@ public class BoardController {
 
 	@GetMapping("/board")
 	public List<BoardResponse> getAllBoard(@RequestParam(required = true) String type,
-		@RequestParam(required = false) String orderBy) {
+		@RequestParam(required = false) Sort orderBy) {
 
 		List<Board> board = boardService.getAllBoard(type, orderBy);
 

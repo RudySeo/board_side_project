@@ -21,6 +21,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sideproject.board.comment.model.entity.Comment;
+import sideproject.board.common.BaseEntity;
 import sideproject.board.member.domain.Entity.Member;
 
 @Entity
@@ -29,7 +30,7 @@ import sideproject.board.member.domain.Entity.Member;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Builder
-public class Board {
+public class Board extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import sideproject.board.board.Sort;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.domain.entity.Board;
 import sideproject.board.board.domain.entity.repository.BoardRepository;
@@ -28,12 +29,12 @@ public class BoardService {
 	public Board saveBoard(Board request, String username) {
 
 		request.create(username, request.getType(), request.getTitle(), request.getContent(), request.getPrice());
-		
+
 		return boardRepository.save(request);
 	}
 
 	@Transactional(readOnly = true)
-	public List<Board> getAllBoard(String type, String orderBy) {
+	public List<Board> getAllBoard(String type, Sort orderBy) {
 
 		return boardRepository.findBoardTypeAll(type, orderBy);
 	}
