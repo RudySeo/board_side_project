@@ -36,7 +36,16 @@ public class BoardController {
 
 		Board board = boardService.saveBoard(request.toEntity(), memberLocal.getName());
 
-		return BoardResponse.builder().board(board).build();
+		return BoardResponse.builder()
+			.id(board.getId())
+			.type(board.getType())
+			.writer(board.getWriter())
+			.title(board.getTitle())
+			.content(board.getContent())
+			.view(board.getView())
+			.like(board.getLike())
+			.price(board.getPrice())
+			.build();
 	}
 
 	@GetMapping("/board")
@@ -59,7 +68,16 @@ public class BoardController {
 
 		Board board = boardService.getOneBoard(id);
 
-		return BoardResponse.builder().board(board).build();
+		return BoardResponse.builder()
+			.id(board.getId())
+			.type(board.getType())
+			.writer(board.getWriter())
+			.title(board.getTitle())
+			.content(board.getContent())
+			.view(board.getView())
+			.like(board.getLike())
+			.price(board.getPrice())
+			.build();
 	}
 
 	@PutMapping("/board/{id}")

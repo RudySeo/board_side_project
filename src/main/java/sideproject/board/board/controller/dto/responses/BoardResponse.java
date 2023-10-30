@@ -1,13 +1,10 @@
 package sideproject.board.board.controller.dto.responses;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sideproject.board.board.domain.entity.Board;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class BoardResponse {
 
@@ -27,16 +24,16 @@ public class BoardResponse {
 
 	private Long price;
 
-
 	@Builder
-	public BoardResponse(Board board) {
-		this.id = board.getId();
-		this.type = board.getType();
-		this.writer = board.getWriter();
-		this.title = board.getTitle();
-		this.content = board.getContent();
-		this.view = board.getView();
-		this.like = board.getLike();
-		this.price = board.getPrice();
+	public BoardResponse(Long id, String type, String writer, String title, String content, Long view, Long like,
+		Long price) {
+		this.id = id;
+		this.type = type;
+		this.writer = writer;
+		this.title = title;
+		this.content = content;
+		this.view = view;
+		this.like = like;
+		this.price = price;
 	}
 }
