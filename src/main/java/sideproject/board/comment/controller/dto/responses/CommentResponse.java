@@ -2,13 +2,12 @@ package sideproject.board.comment.controller.dto.responses;
 
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import sideproject.board.comment.model.entity.Comment;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 public class CommentResponse {
 
 	private Long id;
@@ -24,13 +23,24 @@ public class CommentResponse {
 
 	private LocalDateTime updatedAt;
 
+	// @Builder
+	// public CommentResponse(Comment comment) {
+	// 	this.id = comment.getId();
+	// 	this.writer = comment.getMember().getName();
+	// 	this.boardId = comment.getBoard().getId();
+	// 	this.content = comment.getContent();
+	// 	this.createdAt = comment.getCreatedAt();
+	// 	this.updatedAt = comment.getUpdatedAt();
+	// }
+
 	@Builder
-	public CommentResponse(Comment comment) {
-		this.id = comment.getId();
-		this.writer = comment.getMember().getName();
-		this.boardId = comment.getBoard().getId();
-		this.content = comment.getContent();
-		this.createdAt = comment.getCreatedAt();
-		this.updatedAt = comment.getUpdatedAt();
+	public CommentResponse(Long id, String writer, Long boardId, String content, LocalDateTime createdAt,
+		LocalDateTime updatedAt) {
+		this.id = id;
+		this.writer = writer;
+		this.boardId = boardId;
+		this.content = content;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 	}
 }

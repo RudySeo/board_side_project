@@ -30,7 +30,14 @@ public class CommentController {
 		Member memberLocal = ThreadLocalContext.get();
 
 		Comment comment = commentService.createComment(memberLocal, boardId, request);
-		return CommentResponse.builder().comment(comment).build();
+		return CommentResponse.builder()
+			.id(comment.getId())
+			// .writer(comment.getMember().getName())
+			.boardId(comment.getBoard().getId())
+			.content(comment.getContent())
+			.createdAt(comment.getCreatedAt())
+			.updatedAt(comment.getUpdatedAt())
+			.build();
 	}
 
 	@GetMapping("/comment")
@@ -52,7 +59,13 @@ public class CommentController {
 
 		Comment comment = commentService.getOneComment(id);
 
-		return CommentResponse.builder().comment(comment).build();
+		return CommentResponse.builder()
+			.id(comment.getId())
+			.writer(comment.getMember().getName())
+			.boardId(comment.getBoard().getId())
+			.content(comment.getContent())
+			.createdAt(comment.getCreatedAt())
+			.build();
 	}
 
 	@PutMapping("/comment/{id}")
@@ -60,7 +73,13 @@ public class CommentController {
 
 		Comment comment = commentService.updateComment(id, request.toEntity());
 
-		return CommentResponse.builder().comment(comment).build();
+		return CommentResponse.builder()
+			.id(comment.getId())
+			.writer(comment.getMember().getName())
+			.boardId(comment.getBoard().getId())
+			.content(comment.getContent())
+			.updatedAt(comment.getUpdatedAt())
+			.build();
 	}
 
 	@DeleteMapping("/comment/{id}")
