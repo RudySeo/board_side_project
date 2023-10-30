@@ -27,11 +27,9 @@ public class BoardService {
 	@Transactional
 	public Board saveBoard(Board request, String username) {
 
-		Board board = new Board();
-
-		board.create(username, request.getType(), request.getTitle(), request.getContent(), request.getPrice());
-		log.info(request.getPrice() + "가격확인");
-		return boardRepository.save(board);
+		request.create(username, request.getType(), request.getTitle(), request.getContent(), request.getPrice());
+		
+		return boardRepository.save(request);
 	}
 
 	@Transactional(readOnly = true)

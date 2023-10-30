@@ -61,20 +61,22 @@ public class Board {
 	@OneToMany(mappedBy = "board")
 	private List<Comment> comments = new ArrayList<>();
 
-
-	public void create(String username, String type, String title, String content, Long price) {
-		this.writer = username;
-		this.type = type;
-		this.title = title;
-		this.content = content;
-		this.price = price;
-
+	public static Board create(String username, String type, String title, String content, Long price) {
+		return Board.builder()
+			.writer(username)
+			.type(type)
+			.title(title)
+			.content(content)
+			.price(price)
+			.build();
 	}
 
-	public void update(Long id, String title, String content, Long price) {
-		this.id = id;
-		this.title = title;
-		this.content = content;
-		this.price = price;
+	public static Board update(Long id, String title, String content, Long price) {
+		return Board.builder()
+			.id(id)
+			.title(title)
+			.content(content)
+			.price(price)
+			.build();
 	}
 }
