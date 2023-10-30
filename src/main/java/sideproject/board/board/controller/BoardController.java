@@ -85,7 +85,12 @@ public class BoardController {
 
 		Board board = boardService.updateBoard(id, request);
 
-		return UpdateResponse.builder().board(board).build();
+		return UpdateResponse.builder()
+			.id(board.getId())
+			.title(board.getTitle())
+			.content(board.getContent())
+			.build();
+		// return UpdateResponse.builder().board(board).build();
 	}
 
 	@DeleteMapping("/board/{id}")
