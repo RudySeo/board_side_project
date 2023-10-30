@@ -19,7 +19,6 @@ import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.controller.dto.responses.BoardResponse;
 import sideproject.board.board.controller.dto.responses.UpdateResponse;
 import sideproject.board.board.domain.entity.Board;
-import sideproject.board.board.domain.entity.BoardType;
 import sideproject.board.board.service.BoardService;
 import sideproject.board.global.exception.configuration.ThreadLocalContext;
 import sideproject.board.member.domain.Entity.Member;
@@ -41,9 +40,10 @@ public class BoardController {
 	}
 
 	@GetMapping("/board")
-	public List<BoardResponse> getAllBoard(@RequestParam BoardType type) {
+	public List<BoardResponse> getAllBoard(@RequestParam(required = true) String type,
+		@RequestParam(required = false) String orderBy) {
 
-		List<Board> board = boardService.getAllBoard(type);
+		List<Board> board = boardService.getAllBoard(type, orderBy);
 
 		List<BoardResponse> response = board.stream()
 			.map(

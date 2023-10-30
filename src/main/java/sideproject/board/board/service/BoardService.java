@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.domain.entity.Board;
-import sideproject.board.board.domain.entity.BoardType;
 import sideproject.board.board.domain.entity.repository.BoardRepository;
 import sideproject.board.global.exception.ClientException;
 import sideproject.board.member.domain.Entity.MemberRepository;
@@ -31,14 +30,14 @@ public class BoardService {
 		Board board = new Board();
 
 		board.create(username, request.getType(), request.getTitle(), request.getContent(), request.getPrice());
-
+		log.info(request.getPrice() + "가격확인");
 		return boardRepository.save(board);
 	}
 
 	@Transactional(readOnly = true)
-	public List<Board> getAllBoard(BoardType type) {
+	public List<Board> getAllBoard(String type, String orderBy) {
 
-		return boardRepository.findBoardTypeAll(type);
+		return boardRepository.findBoardTypeAll(type, orderBy);
 	}
 
 	@Transactional(readOnly = true)
