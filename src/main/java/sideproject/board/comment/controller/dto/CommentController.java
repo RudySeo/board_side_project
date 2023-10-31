@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import sideproject.board.comment.controller.dto.requests.CreateCommentRequest;
 import sideproject.board.comment.controller.dto.responses.CommentResponse;
 import sideproject.board.comment.model.entity.Comment;
@@ -21,6 +22,7 @@ import sideproject.board.member.domain.Entity.Member;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class CommentController {
 
 	private final CommentService commentService;
@@ -29,14 +31,15 @@ public class CommentController {
 	public CommentResponse createComment(@PathVariable Long boardId, @RequestBody CreateCommentRequest request) {
 		Member memberLocal = ThreadLocalContext.get();
 
-		Comment comment = commentService.createComment(memberLocal, boardId, request);
+		Comment comment = commentService.createComment(memberLocal, boardId, request.toEntity());
+
+
 		return CommentResponse.builder()
 			.id(comment.getId())
-			// .writer(comment.getMember().getName())
-			.boardId(comment.getBoard().getId())
+			.writer(comment.getMember().getName())
+			// .boardId(comment.getBoard().getId())
 			.content(comment.getContent())
 			.createdAt(comment.getCreatedAt())
-			.updatedAt(comment.getUpdatedAt())
 			.build();
 	}
 
@@ -61,7 +64,7 @@ public class CommentController {
 
 		return CommentResponse.builder()
 			.id(comment.getId())
-			.writer(comment.getMember().getName())
+			// .writer(comment.getMember().getName())
 			.boardId(comment.getBoard().getId())
 			.content(comment.getContent())
 			.createdAt(comment.getCreatedAt())

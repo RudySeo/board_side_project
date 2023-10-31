@@ -18,20 +18,10 @@ public class CommentResponse {
 
 	private String content;
 
-
 	private LocalDateTime createdAt;
 
 	private LocalDateTime updatedAt;
 
-	// @Builder
-	// public CommentResponse(Comment comment) {
-	// 	this.id = comment.getId();
-	// 	this.writer = comment.getMember().getName();
-	// 	this.boardId = comment.getBoard().getId();
-	// 	this.content = comment.getContent();
-	// 	this.createdAt = comment.getCreatedAt();
-	// 	this.updatedAt = comment.getUpdatedAt();
-	// }
 
 	@Builder
 	public CommentResponse(Long id, String writer, Long boardId, String content, LocalDateTime createdAt,
