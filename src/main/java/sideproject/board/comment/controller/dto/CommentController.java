@@ -37,7 +37,7 @@ public class CommentController {
 		return CommentResponse.builder()
 			.id(comment.getId())
 			.writer(comment.getMember().getName())
-			// .boardId(comment.getBoard().getId())
+			.boardId(comment.getBoard().getId())
 			.content(comment.getContent())
 			.createdAt(comment.getCreatedAt())
 			.build();
@@ -64,10 +64,11 @@ public class CommentController {
 
 		return CommentResponse.builder()
 			.id(comment.getId())
-			// .writer(comment.getMember().getName())
+			.writer(comment.getMember().getName())
 			.boardId(comment.getBoard().getId())
 			.content(comment.getContent())
 			.createdAt(comment.getCreatedAt())
+			.updatedAt(comment.getUpdatedAt())
 			.build();
 	}
 

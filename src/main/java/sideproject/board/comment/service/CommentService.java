@@ -29,8 +29,6 @@ public class CommentService {
 	public Comment createComment(Member memberLocal, Long boardId, Comment request) {
 
 		Board board = boardRepository.findById(boardId).orElseThrow(() -> new ClientException(NOT_FOUND_BOARD_ID));
-		log.info("확인주입니다" + board.getId());
-
 		request.create(request.getContent(), board, memberLocal);
 		return commentRepositoy.save(request);
 	}

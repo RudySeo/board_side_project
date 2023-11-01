@@ -49,20 +49,16 @@ public class Comment extends BaseEntity {
 			.build();
 	}
 
-	public static Comment update(Long id, String content) {
-		return Comment.builder()
-			.id(id)
-			.content(content)
-			.build();
+	public void update(Long id, String content) {
+		this.id = id;
+		this.content = content;
+		
 	}
 
-
-	public static Comment create(String content, Board board, Member member) {
-		return Comment.builder()
-			.board(board)
-			.member(member)
-			.content(content)
-			.build();
+	public void create(String content, Board board, Member member) {
+		this.board = board;
+		this.member = member;
+		this.content = content;
 	}
 
 }
