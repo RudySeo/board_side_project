@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sideproject.board.board.domain.BoardRepository;
 import sideproject.board.board.domain.entity.Board;
+import sideproject.board.comment.controller.dto.requests.CreateCommentRequest;
 import sideproject.board.comment.model.entity.Comment;
 import sideproject.board.comment.model.repository.CommentRepositoy;
 import sideproject.board.global.exception.ClientException;
@@ -26,11 +27,11 @@ public class CommentService {
 	private final BoardRepository boardRepository;
 
 	@Transactional
-	public Comment createComment(Member memberLocal, Long boardId, Comment request) {
+	public Comment createComment(Member member, Long boardId, CreateCommentRequest request) {
 
 		Board board = boardRepository.findById(boardId).orElseThrow(() -> new ClientException(NOT_FOUND_BOARD_ID));
-		request.create(request.getContent(), board, memberLocal);
-		return commentRepositoy.save(request);
+		Comment comment = Comment.create(request.getContent(), board, member);
+		return commentRepositoy.save(comment);
 	}
 
 	@Transactional(readOnly = true)

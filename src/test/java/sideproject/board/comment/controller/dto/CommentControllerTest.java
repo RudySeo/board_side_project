@@ -51,7 +51,7 @@ class CommentControllerTest {
 		Comment comment = new Comment();
 		comment.create(request.getContent(), board, threadLocal);
 
-		given(commentService.createComment(member, boardId, request.toEntity())).willReturn(comment);
+		given(commentService.createComment(member, boardId, request)).willReturn(comment);
 
 		// When
 		mockMvc.perform(post("/comment/{boardId}", boardId)
@@ -61,7 +61,7 @@ class CommentControllerTest {
 			.andDo(print());
 
 		// Then
-		verify(commentService).createComment(member, boardId, request.toEntity());
+		verify(commentService).createComment(member, boardId, request);
 
 	}
 }

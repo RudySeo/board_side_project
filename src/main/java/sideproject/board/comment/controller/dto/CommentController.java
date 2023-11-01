@@ -29,9 +29,9 @@ public class CommentController {
 
 	@PostMapping("/comment/{boardId}")
 	public CommentResponse createComment(@PathVariable Long boardId, @RequestBody CreateCommentRequest request) {
-		Member memberLocal = ThreadLocalContext.get();
+		Member member = ThreadLocalContext.get();
 
-		Comment comment = commentService.createComment(memberLocal, boardId, request.toEntity());
+		Comment comment = commentService.createComment(member, boardId, request);
 
 
 		return CommentResponse.builder()
