@@ -8,20 +8,30 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import sideproject.board.board.domain.BoardRepository;
+import sideproject.board.board.domain.entity.Board;
+import sideproject.board.comment.controller.dto.requests.CreateCommentRequest;
 import sideproject.board.comment.model.entity.Comment;
 import sideproject.board.comment.model.repository.CommentRepositoy;
 import sideproject.board.global.exception.ClientException;
+import sideproject.board.member.domain.Entity.Member;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CommentService {
 
 	private final CommentRepositoy commentRepositoy;
 
-	@Transactional
-	public Comment createComment(Comment request) {
+	private final BoardRepository boardRepository;
 
-		return commentRepositoy.save(request);
+	@Transactional
+	public Comment createComment(Member member, Long boardId, CreateCommentRequest request) {
+
+		Board board = boardRepository.findById(boardId).orElseThrow(() -> new ClientException(NOT_FOUND_BOARD_ID));
+		Comment comment = Comment.create(request.getContent(), board, member);
+		return commentRepositoy.save(comment);
 	}
 
 	@Transactional(readOnly = true)

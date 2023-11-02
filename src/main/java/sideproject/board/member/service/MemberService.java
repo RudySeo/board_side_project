@@ -33,7 +33,7 @@ public class MemberService {
 	@Value("${jwt.secretKey}")
 	private String secretKey;
 
-	Long expireTime = 100 * 60 * 60000L;
+	Long expireTime = 100 * 60 * 6000000L;
 	LocalDate currentTime = LocalDate.now();
 
 	@Transactional

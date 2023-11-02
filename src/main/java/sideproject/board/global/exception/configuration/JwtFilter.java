@@ -1,5 +1,7 @@
 package sideproject.board.global.exception.configuration;
 
+import static sideproject.board.global.exception.ErrorCode.*;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import sideproject.board.global.exception.AuthException;
 import sideproject.board.global.exception.ClientException;
 import sideproject.board.global.exception.ErrorCode;
 import sideproject.board.member.domain.Entity.Member;
@@ -51,12 +54,16 @@ public class JwtFilter extends OncePerRequestFilter {
 		String token = authorization.split(" ")[1];
 
 		//유효기간 확인
-		if (JwtUtil.isExpired(token, secretKey)) {
-			log.error("토큰 만료 입니다");
-			filterChain.doFilter(request, response);
-			return;
-		}
+		try {
+			if (JwtUtil.isExpired(token, secretKey)) {
+				log.error("토큰 만료 입니다");
+				filterChain.doFilter(request, response);
+				return;
+			}
+		} catch (Exception e) {
+			throw new AuthException(INVALID_AUTHORIZATION_CODE);
 
+		}
 
 		// try {
 		//유저 이름 꺼내기
