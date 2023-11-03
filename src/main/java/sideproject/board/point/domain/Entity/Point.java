@@ -30,7 +30,7 @@ public class Point extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Long amount;
+	private int amount;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "memberId")
