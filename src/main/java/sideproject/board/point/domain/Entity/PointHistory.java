@@ -1,5 +1,7 @@
 package sideproject.board.point.domain.Entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -15,7 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sideproject.board.common.BaseEntity;
 import sideproject.board.member.domain.Entity.Member;
 
 @Entity
@@ -24,13 +25,15 @@ import sideproject.board.member.domain.Entity.Member;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Builder
-public class PointHistory extends BaseEntity {
+public class PointHistory {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private int amount;
+
+	private LocalDateTime chargeTime = null;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "memberId")

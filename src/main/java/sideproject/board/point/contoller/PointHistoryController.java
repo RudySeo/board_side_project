@@ -1,5 +1,6 @@
 package sideproject.board.point.contoller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,22 +10,28 @@ import lombok.extern.slf4j.Slf4j;
 import sideproject.board.global.exception.configuration.ThreadLocalContext;
 import sideproject.board.member.domain.Entity.Member;
 import sideproject.board.point.contoller.request.PointRequest;
+import sideproject.board.point.contoller.responses.PointHistoryResponse;
 import sideproject.board.point.domain.Entity.PointHistory;
-import sideproject.board.point.service.PointService;
+import sideproject.board.point.service.PointHistoryService;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 public class PointHistoryController {
 
-	private final PointService pointService;
+	private final PointHistoryService pointHistoryService;
 
 	@PostMapping("/point")
-	public int charge(@RequestBody PointRequest request) {
+	public ResponseEntity<PointHistoryResponse> charge(@RequestBody PointRequest request) {
 		Member member = ThreadLocalContext.get();
 
-		PointHistory point = pointService.charge(member, request);
+		PointHistory point = pointHistoryService.charge(member, request);
 
-		return point.getMember().getMoney();
+		PointHistoryResponse response = PointHistoryResponse.builder()
+			.balance(point.getMember().getMoney() + point.getAmount())
+			.chargeAmount(point.getAmount())
+			.build();
+
+		return ResponseEntity.ok(response);
 	}
 }
