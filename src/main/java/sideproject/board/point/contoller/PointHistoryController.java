@@ -1,6 +1,5 @@
 package sideproject.board.point.contoller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,16 +21,15 @@ public class PointHistoryController {
 	private final PointHistoryService pointHistoryService;
 
 	@PostMapping("/point")
-	public ResponseEntity<PointHistoryResponse> charge(@RequestBody PointRequest request) {
+	public PointHistoryResponse charge(@RequestBody PointRequest request) {
 		Member member = ThreadLocalContext.get();
 
 		PointHistory point = pointHistoryService.charge(member, request);
 
-		PointHistoryResponse response = PointHistoryResponse.builder()
+
+		return PointHistoryResponse.builder()
 			.balance(point.getMember().getMoney() + point.getAmount())
 			.chargeAmount(point.getAmount())
 			.build();
-
-		return ResponseEntity.ok(response);
 	}
 }

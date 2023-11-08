@@ -32,12 +32,9 @@ public class PointHistoryService {
 		Member findMember = memberRepository.findByEmail(member.getEmail())
 			.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER_ID));
 
-		log.info(member.getMoney() + "금액확인");
-		//충전 금액과
 		findMember.charge(request.getAmount());
 		memberRepository.save(findMember);
 
-		//충전금액 시간 저장\
 		PointHistory point = PointHistory.builder()
 			.amount(request.getAmount())
 			.member(member)
