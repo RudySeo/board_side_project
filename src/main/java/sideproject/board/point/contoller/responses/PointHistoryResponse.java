@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class PointHistoryResponse {
-	
+
 	private String name;
 	private int balance;
 	private int chargeAmount;

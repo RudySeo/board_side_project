@@ -1,5 +1,7 @@
 package sideproject.board.point.service;
 
+import static sideproject.board.global.exception.ErrorCode.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -54,4 +56,9 @@ public class PointHistoryService {
 		return pointRepository.findAllByMemberId(findMember.getId());
 	}
 
+	@Transactional
+	public PointHistory searchUserPoint(Long id) {
+
+		return pointRepository.findById(id).orElseThrow(() -> new ClientException(NOT_FOUND_BOARD_ID));
+	}
 }

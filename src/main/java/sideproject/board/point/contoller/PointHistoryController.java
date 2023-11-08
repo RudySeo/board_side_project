@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,7 +48,23 @@ public class PointHistoryController {
 			.map(i -> new PointHistoryResponse(i.getMember().getName(), i.getMember().getMoney(), i.getAmount(),
 				i.getChargeTime()))
 			.collect(Collectors.toList());
-		
+
 		return responses;
+	}
+
+	@GetMapping("/point/{id}")
+	public PointHistoryResponse searchUserPoint(@PathVariable Long id) {
+		
+		Member member = ThreadLocalContext.get();
+
+		PointHistory point = pointHistoryService.searchUserPoint(id);
+
+
+		return PointHistoryResponse.builder()
+			.name(point.getMember().getName())
+			.balance(point.getMember().getMoney() + point.getAmount())
+			.chargeAmount(point.getAmount())
+			.chargeTime(point.getChargeTime())
+			.build();
 	}
 }
