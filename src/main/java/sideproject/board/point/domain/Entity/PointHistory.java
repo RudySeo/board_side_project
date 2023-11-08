@@ -24,7 +24,7 @@ import sideproject.board.member.domain.Entity.Member;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Builder
-public class Point extends BaseEntity {
+public class PointHistory extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

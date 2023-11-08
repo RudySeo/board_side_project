@@ -9,13 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 import sideproject.board.global.exception.configuration.ThreadLocalContext;
 import sideproject.board.member.domain.Entity.Member;
 import sideproject.board.point.contoller.request.PointRequest;
-import sideproject.board.point.domain.Entity.Point;
+import sideproject.board.point.domain.Entity.PointHistory;
 import sideproject.board.point.service.PointService;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class PointController {
+public class PointHistoryController {
 
 	private final PointService pointService;
 
@@ -23,7 +23,7 @@ public class PointController {
 	public int charge(@RequestBody PointRequest request) {
 		Member member = ThreadLocalContext.get();
 
-		Point point = pointService.charge(member, request);
+		PointHistory point = pointService.charge(member, request);
 
 		return point.getMember().getMoney();
 	}

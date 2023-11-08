@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 import sideproject.board.board.domain.entity.Board;
 import sideproject.board.comment.model.entity.Comment;
 import sideproject.board.common.BaseEntity;
-import sideproject.board.point.domain.Entity.Point;
+import sideproject.board.point.domain.Entity.PointHistory;
 
 @Entity
 @Getter
@@ -64,7 +64,7 @@ public class Member extends BaseEntity {
 	private List<Board> boards = new ArrayList<>();
 
 	@OneToMany(mappedBy = "member")
-	private List<Point> points = new ArrayList<>();
+	private List<PointHistory> points = new ArrayList<>();
 
 	public LocalDate setLastLoginDate(LocalDate time) {
 		return this.lastLoginDate = time;

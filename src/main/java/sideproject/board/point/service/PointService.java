@@ -9,7 +9,7 @@ import sideproject.board.global.exception.ErrorCode;
 import sideproject.board.member.domain.Entity.Member;
 import sideproject.board.member.domain.Entity.MemberRepository;
 import sideproject.board.point.contoller.request.PointRequest;
-import sideproject.board.point.domain.Entity.Point;
+import sideproject.board.point.domain.Entity.PointHistory;
 import sideproject.board.point.domain.repository.PointRepository;
 
 @Service
@@ -21,7 +21,7 @@ public class PointService {
 
 	private final MemberRepository memberRepository;
 
-	public Point charge(Member member, PointRequest request) {
+	public PointHistory charge(Member member, PointRequest request) {
 
 		Member findMember = memberRepository.findByEmail(member.getEmail())
 			.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER_ID));
@@ -32,7 +32,7 @@ public class PointService {
 		memberRepository.save(findMember);
 
 		//충전금액 시간 저장\
-		Point point = Point.builder()
+		PointHistory point = PointHistory.builder()
 			.amount(request.getAmount())
 			.member(member)
 			.build();
