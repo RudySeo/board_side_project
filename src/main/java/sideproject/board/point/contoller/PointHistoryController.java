@@ -1,5 +1,9 @@
 package sideproject.board.point.contoller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,5 +35,19 @@ public class PointHistoryController {
 			.balance(point.getMember().getMoney() + point.getAmount())
 			.chargeAmount(point.getAmount())
 			.build();
+	}
+
+	@GetMapping("/point")
+	public List<PointHistoryResponse> searchPointList() {
+		Member member = ThreadLocalContext.get();
+
+		List<PointHistory> point = pointHistoryService.searchPointList(member);
+
+		List<PointHistoryResponse> responses = point.stream()
+			.map(i -> new PointHistoryResponse(i.getMember().getName(), i.getMember().getMoney(), i.getAmount(),
+				i.getChargeTime()))
+			.collect(Collectors.toList());
+		
+		return responses;
 	}
 }

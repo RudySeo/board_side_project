@@ -1,6 +1,7 @@
 package sideproject.board.point.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +43,15 @@ public class PointHistoryService {
 			.build();
 
 		return pointRepository.save(point);
+	}
+
+	@Transactional
+	public List<PointHistory> searchPointList(Member member) {
+
+		Member findMember = memberRepository.findByEmail(member.getEmail())
+			.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER_ID));
+
+		return pointRepository.findAllByMemberId(findMember.getId());
 	}
 
 }
