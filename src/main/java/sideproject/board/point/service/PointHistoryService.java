@@ -3,8 +3,9 @@ package sideproject.board.point.service;
 import static sideproject.board.global.exception.ErrorCode.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,17 +49,17 @@ public class PointHistoryService {
 	}
 
 	@Transactional
-	public List<PointHistory> searchPointList(Member member) {
+	public Page<PointHistory> searchPointList(Member member, Pageable pageable) {
 
 		Member findMember = memberRepository.findByEmail(member.getEmail())
 			.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER_ID));
 
-		return pointRepository.findAllByMemberId(findMember.getId());
+		return pointRepository.findAllByMemberId(member.getId(), pageable);
 	}
 
 	@Transactional
 	public PointHistory searchUserPoint(Long id) {
 
-		return pointRepository.findById(id).orElseThrow(() -> new ClientException(NOT_FOUND_BOARD_ID));
+		return pointRepository.findById(id).orElseThrow(() -> new ClientException(NOT_FOUND_POINT_HISTORY_ID));
 	}
 }

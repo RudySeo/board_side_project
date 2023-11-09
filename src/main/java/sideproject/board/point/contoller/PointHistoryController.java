@@ -3,6 +3,9 @@ package sideproject.board.point.contoller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,23 +42,35 @@ public class PointHistoryController {
 	}
 
 	@GetMapping("/point")
-	public List<PointHistoryResponse> searchPointList() {
+	public Page<PointHistoryResponse> searchPointList(Pageable pageable) {
+
+		// Member member = ThreadLocalContext.get();
+		//
+		//
+		// List<PointHistory> point = pointHistoryService.searchPointList(member, pageable);
+		//
+		// List<PointHistoryResponse> responses = point.stream()
+		// 	.map(i -> new PointHistoryResponse(i.getMember().getName(), i.getMember().getMoney(), i.getAmount(),
+		// 		i.getChargeTime()))
+		// 	.collect(Collectors.toList());
+		//
+		// return responses;
 		Member member = ThreadLocalContext.get();
 
-		List<PointHistory> point = pointHistoryService.searchPointList(member);
+		Page<PointHistory> pointPage = pointHistoryService.searchPointList(member, pageable);
 
-		List<PointHistoryResponse> responses = point.stream()
+		List<PointHistoryResponse> responses = pointPage.getContent()
+			.stream()
 			.map(i -> new PointHistoryResponse(i.getMember().getName(), i.getMember().getMoney(), i.getAmount(),
 				i.getChargeTime()))
 			.collect(Collectors.toList());
 
-		return responses;
+		return new PageImpl<>(responses, pageable, pointPage.getTotalElements());
 	}
 
 	@GetMapping("/point/{id}")
 	public PointHistoryResponse searchUserPoint(@PathVariable Long id) {
-		
-		Member member = ThreadLocalContext.get();
+
 
 		PointHistory point = pointHistoryService.searchUserPoint(id);
 
