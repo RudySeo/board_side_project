@@ -1,4 +1,4 @@
-package sideproject.board.board.domain;
+package sideproject.board.board.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

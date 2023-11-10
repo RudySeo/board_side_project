@@ -1,6 +1,7 @@
-package sideproject.board.board.domain.entity.repository;
+package sideproject.board.board.domain.repository;
 
-import static sideproject.board.board.domain.entity.QBoard.*;
+import static sideproject.board.board.domain.QBoard.*;
+import static sideproject.board.comment.model.entity.QComment.*;
 
 import java.util.List;
 
@@ -39,5 +40,14 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
 		}
 		return query.fetch();
 
+	}
+
+	@Override
+	public Board findBoardDetail(Long id) {
+		return queryFactory.select(board)
+			.from(board)
+			.leftJoin(board.comments, comment)
+			.on(board.member.id.eq(id))
+			.fetchOne();
 	}
 }

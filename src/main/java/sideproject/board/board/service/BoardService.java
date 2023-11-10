@@ -12,7 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import sideproject.board.board.Sort;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.domain.entity.Board;
-import sideproject.board.board.domain.entity.repository.BoardRepository;
+import sideproject.board.board.domain.repository.BoardRepository;
+import sideproject.board.comment.model.repository.CommentRepositoy;
 import sideproject.board.global.exception.ClientException;
 import sideproject.board.member.domain.Entity.MemberRepository;
 
@@ -24,6 +25,8 @@ public class BoardService {
 	private final BoardRepository boardRepository;
 
 	private final MemberRepository memberRepository;
+
+	private final CommentRepositoy commentRepositoy;
 
 	@Transactional
 	public Board saveBoard(Board request, String username) {
@@ -42,8 +45,7 @@ public class BoardService {
 	@Transactional(readOnly = true)
 	public Board getOneBoard(Long id) {
 
-		return boardRepository.findById(id)
-			.orElseThrow(() -> new ClientException(NOT_FOUND_BOARD_ID));
+		return boardRepository.findBoardDetail(id);
 
 	}
 
