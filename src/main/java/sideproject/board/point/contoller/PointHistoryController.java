@@ -43,18 +43,7 @@ public class PointHistoryController {
 
 	@GetMapping("/point")
 	public Page<PointHistoryResponse> searchPointList(Pageable pageable) {
-
-		// Member member = ThreadLocalContext.get();
-		//
-		//
-		// List<PointHistory> point = pointHistoryService.searchPointList(member, pageable);
-		//
-		// List<PointHistoryResponse> responses = point.stream()
-		// 	.map(i -> new PointHistoryResponse(i.getMember().getName(), i.getMember().getMoney(), i.getAmount(),
-		// 		i.getChargeTime()))
-		// 	.collect(Collectors.toList());
-		//
-		// return responses;
+		
 		Member member = ThreadLocalContext.get();
 
 		Page<PointHistory> pointPage = pointHistoryService.searchPointList(member, pageable);
