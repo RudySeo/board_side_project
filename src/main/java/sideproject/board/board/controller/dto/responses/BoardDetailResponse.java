@@ -28,19 +28,6 @@ public class BoardDetailResponse {
 
 	private List<CommentResponse> comment;
 
-	// @Builder
-	// public BoardDetailResponse(Long id, String type, String writer, String title, String content, Long view, Long like,
-	// 	Long price) {
-	// 	this.id = id;
-	// 	this.type = type;
-	// 	this.writer = writer;
-	// 	this.title = title;
-	// 	this.content = content;
-	// 	this.view = view;
-	// 	this.like = like;
-	// 	this.price = price;
-	// }
-
 	@Builder
 	public BoardDetailResponse(Long id, String type, String writer, String title, String content, Long view, Long like,
 		Long price, List<CommentResponse> comment) {
