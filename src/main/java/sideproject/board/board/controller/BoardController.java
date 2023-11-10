@@ -17,10 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 import sideproject.board.board.Sort;
 import sideproject.board.board.controller.dto.requests.CreateBoardRequest;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
+import sideproject.board.board.controller.dto.responses.BoardDetailResponse;
 import sideproject.board.board.controller.dto.responses.BoardResponse;
 import sideproject.board.board.controller.dto.responses.UpdateResponse;
 import sideproject.board.board.domain.entity.Board;
 import sideproject.board.board.service.BoardService;
+import sideproject.board.comment.controller.dto.responses.CommentResponse;
 import sideproject.board.global.exception.configuration.ThreadLocalContext;
 import sideproject.board.member.domain.Entity.Member;
 
@@ -65,11 +67,23 @@ public class BoardController {
 	}
 
 	@GetMapping("/board/{id}")
-	public BoardResponse getOneBoard(@PathVariable Long id) {
+	public BoardDetailResponse getOneBoard(@PathVariable Long id) {
 
 		Board board = boardService.getOneBoard(id);
 
-		return BoardResponse.builder()
+		List<CommentResponse> comments = board.getComments()
+			.stream()
+			.map(comment -> CommentResponse.builder()
+				.id(comment.getId())
+				.writer(comment.getMember().getName())
+				.boardId(comment.getBoard().getId())
+				.content(comment.getContent())
+				.createdAt(comment.getCreatedAt())
+				.updatedAt(comment.getUpdatedAt())
+				.build())
+			.collect(Collectors.toList());
+
+		BoardDetailResponse response = BoardDetailResponse.builder()
 			.id(board.getId())
 			.type(board.getType())
 			.writer(board.getWriter())
@@ -78,7 +92,11 @@ public class BoardController {
 			.view(board.getView())
 			.like(board.getLike())
 			.price(board.getPrice())
+			.comment(comments)
 			.build();
+
+		return response;
+
 	}
 
 	@PutMapping("/board/{id}")
