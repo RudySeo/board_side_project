@@ -30,7 +30,7 @@ public class BoardService {
 
 	@Transactional
 	public Board saveBoard(Board request, String username) {
-
+		log.info(username + " = 이름확인");
 		request.create(username, request.getType(), request.getTitle(), request.getContent(), request.getPrice());
 
 		return boardRepository.save(request);
@@ -45,8 +45,7 @@ public class BoardService {
 	@Transactional(readOnly = true)
 	public Board getOneBoard(Long id) {
 
-		return boardRepository.findBoardDetail(id);
-
+		return boardRepository.findById(id).orElseThrow(() -> new ClientException(NOT_FOUND_BOARD_ID));
 	}
 
 	@Transactional

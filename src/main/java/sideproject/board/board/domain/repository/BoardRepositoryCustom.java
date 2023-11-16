@@ -8,5 +8,4 @@ import sideproject.board.board.domain.entity.Board;
 public interface BoardRepositoryCustom {
 	List<Board> findBoardTypeAll(String type, Sort orderBy);
 
-	Board findBoardDetail(Long id);
 }
