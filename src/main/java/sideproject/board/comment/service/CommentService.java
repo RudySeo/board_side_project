@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sideproject.board.board.domain.entity.Board;
-import sideproject.board.board.domain.entity.repository.BoardRepository;
+import sideproject.board.board.domain.repository.BoardRepository;
 import sideproject.board.comment.controller.dto.requests.CreateCommentRequest;
 import sideproject.board.comment.model.entity.Comment;
 import sideproject.board.comment.model.repository.CommentRepositoy;
