@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -23,6 +24,7 @@ import lombok.NoArgsConstructor;
 import sideproject.board.comment.model.entity.Comment;
 import sideproject.board.common.BaseEntity;
 import sideproject.board.member.domain.Entity.Member;
+import sideproject.board.product.domain.Entity.Product;
 
 @Entity
 @Getter
@@ -54,6 +56,10 @@ public class Board extends BaseEntity {
 
 	@Column
 	private String writer;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "productId")
+	private Product product;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "memberId")
