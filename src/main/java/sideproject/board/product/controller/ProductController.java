@@ -1,6 +1,5 @@
 package sideproject.board.product.controller;
 
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,10 +18,10 @@ public class ProductController {
 
 	private final ProductService productService;
 
-	@PostMapping("/product{boardId}")
-	public ProductResponse saveProduct(@PathVariable Long boardId, @RequestBody CreateProduct request) {
+	@PostMapping("/product")
+	public ProductResponse saveProduct(@RequestBody CreateProduct request) {
+		Product product = productService.saveProduct(request.toEntity());
 
-		Product product = productService.saveProduct(boardId, request.toEntity());
 
 		return ProductResponse.builder()
 			.id(product.getId())
@@ -33,7 +32,5 @@ public class ProductController {
 			.build();
 
 	}
-
-
 
 }

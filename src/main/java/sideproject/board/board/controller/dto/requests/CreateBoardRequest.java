@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import sideproject.board.board.domain.entity.Board;
+import sideproject.board.product.controller.dto.requrests.CreateProduct;
 
 @Data
 @AllArgsConstructor
@@ -12,19 +13,16 @@ import sideproject.board.board.domain.entity.Board;
 @Builder
 public class CreateBoardRequest {
 
-	private Long id;
-	private String type;
 	private String title;
 	private String content;
-	private Long price;
+
+	private CreateProduct product;
 
 	public Board toEntity() {
 		return Board.builder()
-			.id(getId())
-			.type(getType())
 			.title(getTitle())
-			.content(getTitle())
-			.price(getPrice())
+			.content(getContent())
 			.build();
 	}
+
 }

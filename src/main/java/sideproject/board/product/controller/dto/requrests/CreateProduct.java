@@ -10,7 +10,6 @@ import sideproject.board.product.domain.Entity.Product;
 @AllArgsConstructor
 public class CreateProduct {
 
-	private Long id;
 
 	private String type;
 
@@ -20,7 +19,6 @@ public class CreateProduct {
 
 	public Product toEntity() {
 		return Product.builder()
-			.id(getId())
 			.type(getType())
 			.price(getPrice())
 			.location(getLocation())

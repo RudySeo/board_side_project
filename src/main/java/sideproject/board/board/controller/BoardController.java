@@ -35,6 +35,7 @@ public class BoardController {
 
 	@PostMapping("/board")
 	public BoardResponse saveBoard(@RequestBody CreateBoardRequest request) {
+
 		Member memberLocal = ThreadLocalContext.get();
 
 		Board board = boardService.saveBoard(request.toEntity(), memberLocal.getName());

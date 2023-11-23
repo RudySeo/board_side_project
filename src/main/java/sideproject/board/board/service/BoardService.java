@@ -30,9 +30,8 @@ public class BoardService {
 
 	@Transactional
 	public Board saveBoard(Board request, String username) {
-		log.info(username + " = 이름확인");
-		request.create(username, request.getType(), request.getTitle(), request.getContent(), request.getPrice());
-
+		request.create(username, request.getType(), request.getTitle(), request.getContent(),
+			request.getPrice(), request.getProduct());
 		return boardRepository.save(request);
 	}
 
