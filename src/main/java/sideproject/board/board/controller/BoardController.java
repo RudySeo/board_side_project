@@ -38,7 +38,7 @@ public class BoardController {
 
 		Member memberLocal = ThreadLocalContext.get();
 
-		Board board = boardService.saveBoard(request.toEntity(), memberLocal.getName());
+		Board board = boardService.saveBoard(request, memberLocal.getName());
 
 		return BoardResponse.builder()
 			.id(board.getId())

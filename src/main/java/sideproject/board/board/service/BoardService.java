@@ -10,12 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sideproject.board.board.Sort;
+import sideproject.board.board.controller.dto.requests.CreateBoardRequest;
 import sideproject.board.board.controller.dto.requests.UpdateRequest;
 import sideproject.board.board.domain.entity.Board;
 import sideproject.board.board.domain.repository.BoardRepository;
 import sideproject.board.comment.model.repository.CommentRepositoy;
 import sideproject.board.global.exception.ClientException;
 import sideproject.board.member.domain.Entity.MemberRepository;
+import sideproject.board.product.domain.Entity.Product;
+import sideproject.board.product.domain.repository.ProductRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -28,11 +31,17 @@ public class BoardService {
 
 	private final CommentRepositoy commentRepositoy;
 
+	private final ProductRepository productRepository;
+
 	@Transactional
-	public Board saveBoard(Board request, String username) {
-		request.create(username, request.getType(), request.getTitle(), request.getContent(),
-			request.getPrice(), request.getProduct());
-		return boardRepository.save(request);
+	public Board saveBoard(CreateBoardRequest request, String username) {
+
+		Product products = request.getProduct().toEntity();
+		productRepository.save(products);
+
+		Board board = request.toEntity();
+		board.create(username, request.getTitle(), request.getContent(), products);
+		return boardRepository.save(board);
 	}
 
 	@Transactional(readOnly = true)

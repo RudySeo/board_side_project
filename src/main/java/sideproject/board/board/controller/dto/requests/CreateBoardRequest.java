@@ -15,12 +15,14 @@ public class CreateBoardRequest {
 
 	private String title;
 	private String content;
+	private String type;
 
 	private CreateProduct product;
 
 	public Board toEntity() {
 		return Board.builder()
 			.title(getTitle())
+			.type(getType())
 			.content(getContent())
 			.build();
 	}

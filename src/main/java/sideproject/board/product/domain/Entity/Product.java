@@ -26,6 +26,7 @@ public class Product extends BaseEntity {
 	private Long id;
 
 	private String type;
+	
 	private Long price;
 
 	private boolean stock = false;

@@ -68,25 +68,6 @@ public class Board extends BaseEntity {
 	@OneToMany(mappedBy = "board")
 	private List<Comment> comments = new ArrayList<>();
 
-	//
-	public static Board create(String username, String type, String title, String content, Long price,
-		Product test) {
-		Product product = Product.builder()
-			.price(price)
-			.stock(true)
-			.location(test.getLocation())
-			.build();
-
-		return Board.builder()
-			.writer(username)
-			.type(type)
-			.title(title)
-			.content(content)
-			.price(price)
-			.product(product)
-			.build();
-	}
-
 	public static Board update(Long id, String title, String content, Long price) {
 		return Board.builder()
 			.id(id)
@@ -94,6 +75,18 @@ public class Board extends BaseEntity {
 			.content(content)
 			.price(price)
 			.build();
+	}
+
+	//
+	public Board create(String username, String title, String content, Product products) {
+		Board board = Board.builder()
+			.writer(username)
+			.title(title)
+			.content(content)
+			.product(products)
+			.build();
+
+		return board;
 	}
 
 }

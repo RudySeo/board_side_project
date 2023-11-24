@@ -10,7 +10,6 @@ import sideproject.board.product.domain.Entity.Product;
 @AllArgsConstructor
 public class CreateProduct {
 
-
 	private String type;
 
 	private Long price;
