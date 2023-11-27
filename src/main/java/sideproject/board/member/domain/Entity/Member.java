@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import sideproject.board.board.domain.entity.Board;
 import sideproject.board.comment.model.entity.Comment;
 import sideproject.board.common.BaseEntity;
+import sideproject.board.order.domain.entity.Order;
 import sideproject.board.point.domain.Entity.PointHistory;
 
 @Entity
@@ -62,6 +63,9 @@ public class Member extends BaseEntity {
 
 	@OneToMany(mappedBy = "member")
 	private List<Board> boards = new ArrayList<>();
+
+	@OneToMany(mappedBy = "member")
+	private List<Order> orders = new ArrayList<>();
 
 	@OneToMany(mappedBy = "member")
 	private List<PointHistory> points = new ArrayList<>();
