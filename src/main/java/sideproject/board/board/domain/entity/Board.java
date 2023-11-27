@@ -77,16 +77,14 @@ public class Board extends BaseEntity {
 			.build();
 	}
 
-	//
-	public Board create(String username, String title, String content, Product products) {
-		Board board = Board.builder()
+	public static Board create(String username, String title, String type, String content, Product product) {
+		return Board.builder()
 			.writer(username)
 			.title(title)
+			.type(type)
 			.content(content)
-			.product(products)
+			.product(product)
 			.build();
-
-		return board;
 	}
 
 }

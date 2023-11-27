@@ -39,10 +39,11 @@ public class BoardService {
 		Product products = request.getProduct().toEntity();
 		productRepository.save(products);
 
-		Board board = request.toEntity();
-		board.create(username, request.getTitle(), request.getContent(), products);
+		Board board = Board.create(username, request.getTitle(), request.getType(), request.getContent(), products);
+
 		return boardRepository.save(board);
 	}
+
 
 	@Transactional(readOnly = true)
 	public List<Board> getAllBoard(String type, Sort orderBy) {
