@@ -39,16 +39,13 @@ public class OrderService {
 
 		Product findProduct = productRepository.findById(request.getProductId())
 			.orElseThrow(() -> new ClientException(NOT_FOUND_PRODUCT_ID));
-		log.info(findProduct.isStock() + "=====");
 
 		if (!findProduct.isStock()) {
 			throw new ClientException(PRODUCT_SOLD_OUT);
 		}
 
-		Order order = Order.builder()
-			.member(member)
-			.product(findProduct)
-			.build();
+		Order order = Order.updateOder(member, findProduct);
+
 
 		Product product = Product.checkProduct(findProduct);
 		Member.payable(member.getMoney(), product.getPrice());

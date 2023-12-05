@@ -71,8 +71,10 @@ public class Member extends BaseEntity {
 	private List<PointHistory> points = new ArrayList<>();
 
 
-	public static long payable(int money, Long price) {
-		return money - price;
+	public static Member payable(int money, Long price) {
+		return Member.builder()
+			.money((int)(money - price))
+			.build();
 	}
 
 	public LocalDate setLastLoginDate(LocalDate time) {
