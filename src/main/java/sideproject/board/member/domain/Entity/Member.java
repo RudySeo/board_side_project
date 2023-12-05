@@ -81,6 +81,11 @@ public class Member extends BaseEntity {
 	}
 
 	public int charge(int amount) {
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		return this.money += amount;
 	}
 }
