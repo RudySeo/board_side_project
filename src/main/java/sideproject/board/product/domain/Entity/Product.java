@@ -53,12 +53,4 @@ public class Product extends BaseEntity {
 			.build();
 	}
 
-	public static Product checkProduct(Product findProduct) {
-		return Product.builder()
-			.type(findProduct.type)
-			.price(findProduct.price)
-			.stock(false)
-			.location(findProduct.location)
-			.build();
-	}
 }

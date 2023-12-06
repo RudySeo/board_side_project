@@ -70,13 +70,6 @@ public class Member extends BaseEntity {
 	@OneToMany(mappedBy = "member")
 	private List<PointHistory> points = new ArrayList<>();
 
-
-	public static Member payable(int money, Long price) {
-		return Member.builder()
-			.money((int)(money - price))
-			.build();
-	}
-
 	public LocalDate setLastLoginDate(LocalDate time) {
 		return this.lastLoginDate = time;
 	}

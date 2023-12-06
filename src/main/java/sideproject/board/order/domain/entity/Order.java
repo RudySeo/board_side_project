@@ -35,10 +35,4 @@ public class Order extends BaseEntity {
 	@JoinColumn(name = "productId")
 	private Product product;
 
-	public static Order updateOder(Member member, Product product) {
-		return Order.builder()
-			.member(member)
-			.product(product)
-			.build();
-	}
 }

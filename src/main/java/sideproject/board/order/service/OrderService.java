@@ -30,10 +30,10 @@ public class OrderService {
 	@Transactional
 	public void processPayment(PaymentRequest request, Long memberId) {
 
-		Member member = memberRepository.findById(memberId)
+		Member findmember = memberRepository.findById(memberId)
 			.orElseThrow(() -> new ClientException(NOT_FOUND_MEMBER_ID));
 
-		if (member.getMoney() < request.getPrice()) {
+		if (findmember.getMoney() < request.getPrice()) {
 			throw new ClientException(NOT_ENOUGH_MONEY);
 		}
 
@@ -44,11 +44,23 @@ public class OrderService {
 			throw new ClientException(PRODUCT_SOLD_OUT);
 		}
 
-		Order order = Order.updateOder(member, findProduct);
+		Order order = Order.builder()
+			.member(findmember)
+			.product(findProduct)
+			.build();
 
+		Product product = Product.builder()
+			.id(findProduct.getId())
+			.type(findProduct.getType())
+			.price(findProduct.getPrice())
+			.stock(false)
+			.location(findProduct.getLocation())
+			.build();
 
-		Product product = Product.checkProduct(findProduct);
-		Member.payable(member.getMoney(), product.getPrice());
+		Member member = Member.builder()
+			.id(findmember.getId())
+			.money((int)(findmember.getMoney() - product.getPrice()))
+			.build();
 
 		orderRepository.save(order);
 		memberRepository.save(member);
