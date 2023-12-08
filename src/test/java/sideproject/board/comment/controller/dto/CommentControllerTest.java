@@ -27,11 +27,10 @@ import sideproject.board.member.domain.Entity.Member;
 @AutoConfigureMockMvc
 class CommentControllerTest {
 
-	@Autowired
-	private MockMvc mockMvc;
-
 	@MockBean
 	CommentService commentService;
+	@Autowired
+	private MockMvc mockMvc;
 
 	@DisplayName("댓글 작성하기")
 	@Test

@@ -35,7 +35,9 @@ public class PointHistoryService {
 
 		Member findMember = memberRepository.findByEmail(member.getEmail())
 			.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER_ID));
-		
+
+		simulateProcessingTime();
+
 		findMember.charge(request.getAmount());
 		memberRepository.save(findMember);
 
@@ -44,8 +46,18 @@ public class PointHistoryService {
 			.member(member)
 			.chargeTime(time)
 			.build();
+		log.info(findMember.getMoney() + "잔액환인중@@!!");
 
 		return pointRepository.save(point);
+	}
+
+	private void simulateProcessingTime() {
+		try {
+			// 처리 시간을 시뮬레이션합니다.
+			Thread.sleep(5000); // 5초
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	@Transactional
