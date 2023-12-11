@@ -36,10 +36,12 @@ public class PointHistoryService {
 		Member findMember = memberRepository.findByEmail(member.getEmail())
 			.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER_ID));
 
-		simulateProcessingTime();
-
-		findMember.charge(request.getAmount());
-		memberRepository.save(findMember);
+		Member updateMember = Member.builder()
+			.id(findMember.getId())
+			.money(findMember.getMoney() + request.getAmount())
+			.build();
+		
+		memberRepository.save(updateMember);
 
 		PointHistory point = PointHistory.builder()
 			.amount(request.getAmount())

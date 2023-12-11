@@ -1,92 +1,85 @@
 package sideproject.board.point.service;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
 
-import sideproject.board.board.domain.entity.Board;
-import sideproject.board.comment.model.entity.Comment;
 import sideproject.board.member.domain.Entity.Member;
 import sideproject.board.member.domain.Entity.MemberRepository;
-import sideproject.board.member.domain.Entity.Role;
 import sideproject.board.point.contoller.request.PointRequest;
-import sideproject.board.point.domain.Entity.PointHistory;
 import sideproject.board.point.domain.repository.PointRepository;
 
 @SpringBootTest
+@Transactional
+@ExtendWith(MockitoExtension.class)
 class PointHistoryServiceTest {
-
-	@MockBean
+	@Mock
 	private PointRepository pointRepository;
 
-	@MockBean
-	private MemberRepository memberRepository; //5
+	@Mock
+	private MemberRepository memberRepository;
+
 	@InjectMocks
 	private PointHistoryService pointHistoryService;
 
+	private LocalDateTime time;
 
+	@BeforeEach
+	void setUp() {
+		time = LocalDateTime.now();
+	}
 
 	@Test
-	@DisplayName("동시성 테스트")
-	public void testConcurrentCharge() throws InterruptedException {
+	@DisplayName("충전 테스트 코드")
+	void testCharge() throws InterruptedException {
 		// Given
-		int threadCount = 100;
-		LocalDateTime time = LocalDateTime.now();
-		List<Comment> comments = new ArrayList<>();
-		List<Board> boards = new ArrayList<>();
-		List<PointHistory> points = new ArrayList<>();
-		PointRequest request = new PointRequest(1);
+		int initialAmount = 50;
+		int chargeAmount = 30;
+		int numberOfThreads = 2;
 
-		Member member = new Member(1L, "test@example.com", "password", "John Doe", 25, 0, null, Role.USER,
-			comments, boards, points);
+		ExecutorService service = Executors.newFixedThreadPool(numberOfThreads);
+		CountDownLatch latch = new CountDownLatch(numberOfThreads);
 
-		PointHistory point = PointHistory.builder()
-			.amount(request.getAmount())
-			.member(member)
-			.chargeTime(time)
+		Member member = Member.builder()
+			.id(1L)
+			.email("환영압니11")
+			.password("1111")
+			.name("동권")
+			.age(25)
+			.money(initialAmount + chargeAmount)
 			.build();
 
-
-		given(pointRepository.save(point)).willReturn(point);
+		PointRequest request = new PointRequest(chargeAmount);
 
 		// When
-		List<Future<Void>> response = runConcurrentThreads(threadCount, member, request);
+		service.execute(() -> {
+			pointHistoryService.charge(member, request);
+			latch.countDown();
+		});
 
-		// Then
-		assertNotNull(response);
-
-		verify(memberRepository, times(threadCount)).save(any(Member.class));
-	}
-
-	private List<Future<Void>> runConcurrentThreads(int threadCount, Member member, PointRequest request) throws
-		InterruptedException {
-		ExecutorService executorService = Executors.newFixedThreadPool(32);
-		CountDownLatch latch = new CountDownLatch(threadCount);
-
-		for (int i = 0; i < threadCount; i++) {
-			executorService.submit(() -> {
-				try {
-					pointHistoryService.charge(member, request);
-				} finally {
-					latch.countDown();
-				}
-			});
-		}
+		service.execute(() -> {
+			pointHistoryService.charge(member, request);
+			latch.countDown();
+		});
 		latch.await();
-		return null;
-	}
 
+		verify(pointHistoryService, times(2)).charge(eq(member), eq(request));
+
+		Member updatedMember = memberRepository.findByEmail(member.getEmail()).orElseThrow();
+		assertEquals(initialAmount + chargeAmount + (chargeAmount * 2), updatedMember.getMoney());
+	}
 }

@@ -80,7 +80,4 @@ public class Member extends BaseEntity {
 		this.age = age;
 	}
 
-	public int charge(int amount) {
-		return this.money += amount;
-	}
 }
