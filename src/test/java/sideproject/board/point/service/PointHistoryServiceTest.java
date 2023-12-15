@@ -16,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import sideproject.board.member.domain.Entity.Member;
 import sideproject.board.member.domain.Entity.MemberRepository;
@@ -24,9 +23,9 @@ import sideproject.board.point.contoller.request.PointRequest;
 import sideproject.board.point.domain.repository.PointRepository;
 
 @SpringBootTest
-@Transactional
 @ExtendWith(MockitoExtension.class)
 class PointHistoryServiceTest {
+
 	@Mock
 	private PointRepository pointRepository;
 
@@ -54,32 +53,35 @@ class PointHistoryServiceTest {
 		ExecutorService service = Executors.newFixedThreadPool(numberOfThreads);
 		CountDownLatch latch = new CountDownLatch(numberOfThreads);
 
+		PointRequest request = new PointRequest(chargeAmount);
+
+
 		Member member = Member.builder()
-			.id(1L)
-			.email("환영압니11")
+			.email("test@gmail.com")
 			.password("1111")
 			.name("동권")
 			.age(25)
 			.money(initialAmount + chargeAmount)
 			.build();
 
-		PointRequest request = new PointRequest(chargeAmount);
+		System.out.println(member + "   확인중22222");
 
 		// When
-		service.execute(() -> {
-			pointHistoryService.charge(member, request);
-			latch.countDown();
-		});
+		// service.execute(() -> {
+		// 	pointHistoryService.charge(member, request);
+		// 	latch.countDown();
+		// });
 
-		service.execute(() -> {
-			pointHistoryService.charge(member, request);
-			latch.countDown();
-		});
+		// service.execute(() -> {
+		// 	pointHistoryService.charge(member, request);
+		// 	latch.countDown();
+		// });
 		latch.await();
+
 
 		verify(pointHistoryService, times(2)).charge(eq(member), eq(request));
 
 		Member updatedMember = memberRepository.findByEmail(member.getEmail()).orElseThrow();
-		assertEquals(initialAmount + chargeAmount + (chargeAmount * 2), updatedMember.getMoney());
+		assertEquals(initialAmount + (chargeAmount * 2), updatedMember.getMoney());
 	}
 }

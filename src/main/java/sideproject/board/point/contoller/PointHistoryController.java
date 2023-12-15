@@ -31,9 +31,9 @@ public class PointHistoryController {
 	@PostMapping("/point")
 	public PointHistoryResponse charge(@RequestBody PointRequest request) {
 		Member member = ThreadLocalContext.get();
+		log.info(request.getAmount() + "확인중");
 
-		PointHistory point = pointHistoryService.charge(member, request);
-
+		PointHistory point = pointHistoryService.charge(member, request.getAmount());
 
 		return PointHistoryResponse.builder()
 			.balance(point.getMember().getMoney() + point.getAmount())

@@ -15,7 +15,6 @@ import sideproject.board.global.exception.ClientException;
 import sideproject.board.global.exception.ErrorCode;
 import sideproject.board.member.domain.Entity.Member;
 import sideproject.board.member.domain.Entity.MemberRepository;
-import sideproject.board.point.contoller.request.PointRequest;
 import sideproject.board.point.domain.Entity.PointHistory;
 import sideproject.board.point.domain.repository.PointRepository;
 
@@ -31,36 +30,31 @@ public class PointHistoryService {
 	LocalDateTime time = LocalDateTime.now();
 
 	@Transactional
-	public PointHistory charge(Member member, PointRequest request) {
-
-		Member findMember = memberRepository.findByEmail(member.getEmail())
+	public PointHistory charge(Member member, int request) {
+		Member findMember = memberRepository.findById(member.getId())
 			.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER_ID));
 
-		Member updateMember = Member.builder()
-			.id(findMember.getId())
-			.money(findMember.getMoney() + request.getAmount())
-			.build();
-		
-		memberRepository.save(updateMember);
+		log.info(request + "확인중");
+		// Member updateMember = Member.builder()
+		// 	.id(member.getId())
+		// 	.email(member.getEmail())
+		// 	.name(member.getName())
+		// 	.money(member.getMoney() + request.getAmount())
+		// 	.build();
+		findMember.addMoney(request);
+
+		memberRepository.save(findMember);
 
 		PointHistory point = PointHistory.builder()
-			.amount(request.getAmount())
-			.member(member)
+			.amount(request)
+			.member(findMember)
 			.chargeTime(time)
 			.build();
-		log.info(findMember.getMoney() + "잔액환인중@@!!");
 
 		return pointRepository.save(point);
 	}
 
-	private void simulateProcessingTime() {
-		try {
-			// 처리 시간을 시뮬레이션합니다.
-			Thread.sleep(5000); // 5초
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
-	}
+
 
 	@Transactional
 	public Page<PointHistory> searchPointList(Member member, Pageable pageable) {
