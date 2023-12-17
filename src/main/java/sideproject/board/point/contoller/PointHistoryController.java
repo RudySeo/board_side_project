@@ -31,12 +31,11 @@ public class PointHistoryController {
 	@PostMapping("/point")
 	public PointHistoryResponse charge(@RequestBody PointRequest request) {
 		Member member = ThreadLocalContext.get();
-		log.info(request.getAmount() + "확인중");
 
-		PointHistory point = pointHistoryService.charge(member, request.getAmount());
+		PointHistory point = pointHistoryService.charge(member.getEmail(), request.getAmount());
 
 		return PointHistoryResponse.builder()
-			.balance(point.getMember().getMoney() + point.getAmount())
+			.balance(point.getMember().getMoney())
 			.chargeAmount(point.getAmount())
 			.build();
 	}

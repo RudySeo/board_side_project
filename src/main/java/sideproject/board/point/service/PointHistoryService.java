@@ -30,23 +30,16 @@ public class PointHistoryService {
 	LocalDateTime time = LocalDateTime.now();
 
 	@Transactional
-	public PointHistory charge(Member member, int request) {
-		Member findMember = memberRepository.findById(member.getId())
+	public PointHistory charge(String email, int amount) {
+		log.info(email + "확인중@@@!!");
+		Member findMember = memberRepository.findByEmail(email)
 			.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER_ID));
 
-		log.info(request + "확인중");
-		// Member updateMember = Member.builder()
-		// 	.id(member.getId())
-		// 	.email(member.getEmail())
-		// 	.name(member.getName())
-		// 	.money(member.getMoney() + request.getAmount())
-		// 	.build();
-		findMember.addMoney(request);
-
+		findMember.addMoney(amount);
 		memberRepository.save(findMember);
 
 		PointHistory point = PointHistory.builder()
-			.amount(request)
+			.amount(amount)
 			.member(findMember)
 			.chargeTime(time)
 			.build();

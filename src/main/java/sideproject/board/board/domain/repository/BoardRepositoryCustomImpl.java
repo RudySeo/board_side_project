@@ -1,6 +1,6 @@
 package sideproject.board.board.domain.repository;
 
-import static sideproject.board.board.domain.QBoard.*;
+import static sideproject.board.board.domain.entity.QBoard.*;
 
 import java.util.List;
 
