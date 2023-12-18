@@ -33,26 +33,26 @@ class PointHistoryServiceTest {
 	@InjectMocks
 	private PointHistoryService pointHistoryService;
 
-
 	@Test
 	@DisplayName("동시성 문제 테스트 코드 작성")
 	public void testCharge23() throws InterruptedException {
-		// Arrange
-		Long memberId = 1L;
+		// given
+		Long testID = 1L;
 		int initialMoney = 0;
-		int amount = 100;
-		int numberOfThreads = 1;
+		int amount = 1;
+		int numberOfThreads = 100;
 
 		ExecutorService service = Executors.newFixedThreadPool(numberOfThreads);
 		CountDownLatch latch = new CountDownLatch(numberOfThreads);
 
 		Member member = Member.builder()
-			.id(memberId)
+			.id(testID)
 			.money(initialMoney)
 			.build();
-		when(memberRepository.findById(eq(memberId))).thenReturn(Optional.of(member));
+		when(memberRepository.findById(eq(testID))).thenReturn(Optional.of(member));
 
 		PointHistory pointHistory = PointHistory.builder()
+			.id(testID)
 			.amount(amount)
 			.member(member)
 			.chargeTime(LocalDateTime.now())
@@ -61,30 +61,22 @@ class PointHistoryServiceTest {
 		when(pointRepository.save(any(PointHistory.class))).thenReturn(pointHistory);
 		PointHistory[] results = new PointHistory[numberOfThreads];
 
+		//When
 		for (int i = 0; i < numberOfThreads; i++) {
-			int index = i; // create a separate variable inside the loop
 			service.execute(() -> {
-				results[index] = pointHistoryService.charge(memberId, amount);
+				pointHistoryService.charge(testID, amount);
 				latch.countDown();
 			});
 		}
 
 		latch.await();
 
-		// Assert
-		verify(memberRepository, times(numberOfThreads)).findById(eq(memberId));
-		verify(memberRepository, times(numberOfThreads)).save(any(Member.class));
-		verify(pointRepository, times(numberOfThreads)).save(any(PointHistory.class));
+		//Then
 
-		for (int i = 0; i < numberOfThreads; i++) {
-			System.out.println(amount + "======== 잔액확인");
-			System.out.println(results[0].getAmount() + "======== 잔액확인");
+		Member findMember = memberRepository.findById(testID).orElseThrow();
+		System.out.println(findMember.getMoney() + "====돈확인");
 
-			System.out.println(amount + "======== 잔액확인");
-			// System.out.println(results[1].getAmount() + "======== 잔액확인");
+		assertEquals(findMember.getMoney(), initialMoney + numberOfThreads * (amount));
 
-			assertEquals(amount, results[i].getAmount());
-			assertEquals(initialMoney + amount, results[i].getMember().getMoney());
-		}
 	}
 }
