@@ -31,8 +31,8 @@ public class PointHistoryService {
 
 	@Transactional
 	public PointHistory charge(Long id, int amount) {
-		
-		Member findMember = memberRepository.findById(id)
+
+		Member findMember = memberRepository.findAndLockById(id)
 			.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER_ID));
 
 		findMember.addMoney(amount);

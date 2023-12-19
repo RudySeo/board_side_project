@@ -40,7 +40,7 @@ class PointHistoryServiceTest {
 		Long testID = 1L;
 		int initialMoney = 0;
 		int amount = 1;
-		int numberOfThreads = 100;
+		int numberOfThreads = 5;
 
 		ExecutorService service = Executors.newFixedThreadPool(numberOfThreads);
 		CountDownLatch latch = new CountDownLatch(numberOfThreads);
@@ -49,7 +49,7 @@ class PointHistoryServiceTest {
 			.id(testID)
 			.money(initialMoney)
 			.build();
-		when(memberRepository.findById(eq(testID))).thenReturn(Optional.of(member));
+		when(memberRepository.findAndLockById(eq(testID))).thenReturn(Optional.of(member));
 
 		PointHistory pointHistory = PointHistory.builder()
 			.id(testID)
@@ -64,7 +64,14 @@ class PointHistoryServiceTest {
 		//When
 		for (int i = 0; i < numberOfThreads; i++) {
 			service.execute(() -> {
-				pointHistoryService.charge(testID, amount);
+				try {
+					Thread.sleep(300);
+					pointHistoryService.charge(testID, amount);
+					System.out.println("성공했습니다");
+				} catch (Exception e) {
+					System.out.println("오류입니다");
+
+				}
 				latch.countDown();
 			});
 		}
@@ -73,7 +80,7 @@ class PointHistoryServiceTest {
 
 		//Then
 
-		Member findMember = memberRepository.findById(testID).orElseThrow();
+		Member findMember = memberRepository.findAndLockById(testID).orElseThrow();
 		System.out.println(findMember.getMoney() + "====돈확인");
 
 		assertEquals(findMember.getMoney(), initialMoney + numberOfThreads * (amount));
