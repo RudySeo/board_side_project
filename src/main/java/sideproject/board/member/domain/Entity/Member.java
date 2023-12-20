@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import sideproject.board.board.domain.entity.Board;
 import sideproject.board.comment.model.entity.Comment;
 import sideproject.board.common.BaseEntity;
@@ -28,6 +29,7 @@ import sideproject.board.point.domain.Entity.PointHistory;
 
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -84,7 +86,4 @@ public class Member extends BaseEntity {
 		this.age = age;
 	}
 
-	public int charge(int amount) {
-		return this.money += amount;
-	}
 }

@@ -15,7 +15,6 @@ import sideproject.board.global.exception.ClientException;
 import sideproject.board.global.exception.ErrorCode;
 import sideproject.board.member.domain.Entity.Member;
 import sideproject.board.member.domain.Entity.MemberRepository;
-import sideproject.board.point.contoller.request.PointRequest;
 import sideproject.board.point.domain.Entity.PointHistory;
 import sideproject.board.point.domain.repository.PointRepository;
 
@@ -31,22 +30,31 @@ public class PointHistoryService {
 	LocalDateTime time = LocalDateTime.now();
 
 	@Transactional
-	public PointHistory charge(Member member, PointRequest request) {
+	public PointHistory charge(Long id, int amount) {
 
-		Member findMember = memberRepository.findByEmail(member.getEmail())
+		Member findMember = memberRepository.findAndLockById(id)
 			.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER_ID));
 
-		findMember.charge(request.getAmount());
+		findMember.addMoney(amount);
+
 		memberRepository.save(findMember);
 
 		PointHistory point = PointHistory.builder()
-			.amount(request.getAmount())
-			.member(member)
+			.amount(amount)
+			.member(findMember)
 			.chargeTime(time)
 			.build();
 
 		return pointRepository.save(point);
 	}
+
+	// private void ThreadSleep() {
+	// 	try {
+	// 		Thread.sleep(500);
+	// 	} catch (InterruptedException e) {
+	// 		Thread.currentThread().interrupt();
+	// 	}
+	// }
 
 	@Transactional
 	public Page<PointHistory> searchPointList(Member member, Pageable pageable) {

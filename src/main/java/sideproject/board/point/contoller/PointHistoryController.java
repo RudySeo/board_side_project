@@ -32,11 +32,10 @@ public class PointHistoryController {
 	public PointHistoryResponse charge(@RequestBody PointRequest request) {
 		Member member = ThreadLocalContext.get();
 
-		PointHistory point = pointHistoryService.charge(member, request);
-
+		PointHistory point = pointHistoryService.charge(member.getId(), request.getAmount());
 
 		return PointHistoryResponse.builder()
-			.balance(point.getMember().getMoney() + point.getAmount())
+			.balance(point.getMember().getMoney())
 			.chargeAmount(point.getAmount())
 			.build();
 	}
