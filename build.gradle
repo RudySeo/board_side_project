@@ -77,3 +77,9 @@ configurations {
     }
     querydsl.extendsFrom compileClasspath
 }
+
+jar {
+    enabled = false
+}
+
+version '1.0.1-SNAPSHOT-' + new Date().format("yyyyMMddHHmmss")
