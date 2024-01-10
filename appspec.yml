@@ -1,0 +1,26 @@
+version: 0.0 # CodeDeploy 버전
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/cicd
+    overwrite: yes
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+
+hooks: # CodeDeploy 배포 단계에서 실행할 명령어
+  AfterInstall:
+    - location: scripts/stop.sh
+      timeout: 60
+      runas: ubuntu
+  ApplicationStart:
+    - location: scripts/start.sh
+      timeout: 60
+      runas: ubuntu
+  ValidateService:
+    - location: scripts/haelth.sh # 새 스프링 부트가 정상적으로 실행됐는지 확인
+      timeout: 60
+      runas: ubuntu
