@@ -26,6 +26,10 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 application-db.properties
+application-real.properties
+application-real1.properties
+application-real2.properties
+
 
 ### NetBeans ###
 /nbproject/private/
