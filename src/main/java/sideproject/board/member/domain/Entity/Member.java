@@ -16,6 +16,12 @@ import javax.persistence.OneToMany;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,6 +60,8 @@ public class Member extends BaseEntity {
 	@Column(nullable = false)
 	private int money = 0;
 
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate lastLoginDate = null;
 
 	@Enumerated(EnumType.STRING)
@@ -69,7 +77,9 @@ public class Member extends BaseEntity {
 	@OneToMany(mappedBy = "member")
 	private List<Order> orders = new ArrayList<>();
 
+
 	@OneToMany(mappedBy = "member")
+	@JsonManagedReference
 	private List<PointHistory> points = new ArrayList<>();
 
 	public LocalDate setLastLoginDate(LocalDate time) {

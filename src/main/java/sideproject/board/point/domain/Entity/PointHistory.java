@@ -13,6 +13,12 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,9 +39,12 @@ public class PointHistory {
 
 	private int amount;
 
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime chargeTime = null;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonBackReference
 	@JoinColumn(name = "memberId")
 	private Member member;
 }
