@@ -1,5 +1,7 @@
 package sideproject.board.member.contoller.responses;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +11,7 @@ import sideproject.board.member.domain.Entity.Member;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberResponse {
+public class MemberResponse implements Serializable {
 
 	private Long id;
 

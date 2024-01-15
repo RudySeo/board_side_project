@@ -11,11 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import sideproject.board.global.exception.ClientException;
@@ -36,9 +31,8 @@ public class MemberService {
 
 	private final BCryptPasswordEncoder bcrypt;
 	Long expireTime = 100 * 60 * 6000000L;
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	LocalDate currentTime = LocalDate.now();
+
 	@Value("${jwt.secretKey}")
 	private String secretKey;
 
@@ -84,7 +78,7 @@ public class MemberService {
 	}
 
 	@Transactional(readOnly = true)
-	@Cacheable(cacheNames = "test", key = "#id", condition = "#id != null", cacheManager = "contentCacheManager")
+	@Cacheable(value = "Member", key = "#id", cacheManager = "testCacheManager")
 	public Member getMemberById(Long id) {
 
 		return memberRepository.findById(id)

@@ -43,8 +43,8 @@ public class PointHistory {
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime chargeTime = null;
 
-	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonBackReference
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "memberId")
 	private Member member;
 }

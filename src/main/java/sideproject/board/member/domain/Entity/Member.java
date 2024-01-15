@@ -16,7 +16,6 @@ import javax.persistence.OneToMany;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -77,9 +76,7 @@ public class Member extends BaseEntity {
 	@OneToMany(mappedBy = "member")
 	private List<Order> orders = new ArrayList<>();
 
-
 	@OneToMany(mappedBy = "member")
-	@JsonManagedReference
 	private List<PointHistory> points = new ArrayList<>();
 
 	public LocalDate setLastLoginDate(LocalDate time) {

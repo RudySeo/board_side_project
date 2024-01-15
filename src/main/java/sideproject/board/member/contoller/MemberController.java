@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +57,7 @@ public class MemberController {
 			.collect(Collectors.toList());
 	}
 
+	@Cacheable(value = "Member", key = "#id", cacheManager = "testCacheManager")
 	@GetMapping("/user/{id}")
 	public MemberResponse getOneMember(@PathVariable Long id) {
 
