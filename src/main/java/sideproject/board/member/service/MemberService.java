@@ -80,7 +80,7 @@ public class MemberService {
 	@Transactional(readOnly = true)
 	@Cacheable(value = "Member", key = "#id", cacheManager = "testCacheManager")
 	public Member getMemberById(Long id) {
-
+		
 		return memberRepository.findById(id)
 			.orElseThrow(() -> new ClientException(NOT_FOUND_MEMBER_ID));
 	}

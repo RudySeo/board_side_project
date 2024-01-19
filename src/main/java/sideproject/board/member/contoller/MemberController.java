@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +37,13 @@ public class MemberController {
 
 		Member member = memberService.signUp(request.toEntity());
 
-		return MemberResponse.builder().member(member).build();
+		return MemberResponse.builder()
+			.id(member.getId())
+			.email(member.getEmail())
+			.name(member.getName())
+			.age(member.getAge())
+			.money(member.getMoney())
+			.build();
 	}
 
 	@PostMapping("/login")
@@ -57,13 +62,20 @@ public class MemberController {
 			.collect(Collectors.toList());
 	}
 
-	@Cacheable(value = "Member", key = "#id", cacheManager = "testCacheManager")
+
 	@GetMapping("/user/{id}")
 	public MemberResponse getOneMember(@PathVariable Long id) {
 
 		Member member = memberService.getMemberById(id);
 
-		return MemberResponse.builder().member(member).build();
+		return MemberResponse.builder()
+			.id(member.getId())
+			.email(member.getEmail())
+			.name(member.getName())
+			.age(member.getAge())
+			.money(member.getMoney())
+			.build();
+
 	}
 
 	@PutMapping("/user/{id}")

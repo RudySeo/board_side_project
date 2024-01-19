@@ -1,5 +1,6 @@
 package sideproject.board.point.domain.Entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -31,7 +32,7 @@ import sideproject.board.member.domain.Entity.Member;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Builder
-public class PointHistory {
+public class PointHistory implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

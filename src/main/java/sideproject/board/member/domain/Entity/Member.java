@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -76,6 +77,7 @@ public class Member extends BaseEntity {
 	@OneToMany(mappedBy = "member")
 	private List<Order> orders = new ArrayList<>();
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "member")
 	private List<PointHistory> points = new ArrayList<>();
 

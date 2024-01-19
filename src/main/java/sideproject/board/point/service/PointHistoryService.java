@@ -48,14 +48,6 @@ public class PointHistoryService {
 		return pointRepository.save(point);
 	}
 
-	// private void ThreadSleep() {
-	// 	try {
-	// 		Thread.sleep(500);
-	// 	} catch (InterruptedException e) {
-	// 		Thread.currentThread().interrupt();
-	// 	}
-	// }
-
 	@Transactional
 	public Page<PointHistory> searchPointList(Member member, Pageable pageable) {
 

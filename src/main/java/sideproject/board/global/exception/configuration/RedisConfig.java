@@ -49,7 +49,7 @@ public class RedisConfig {
 			.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
 			.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(
 				new GenericJackson2JsonRedisSerializer())) // Value Serializer 변경
-			.entryTtl(Duration.ofMinutes(1L)); // 캐시 수명 30분
+			.entryTtl(Duration.ofMinutes(1L));
 
 		return RedisCacheManager
 			.RedisCacheManagerBuilder
