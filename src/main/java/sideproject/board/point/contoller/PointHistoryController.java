@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import sideproject.board.global.exception.RedissonLockStockFacade;
 import sideproject.board.global.exception.configuration.ThreadLocalContext;
 import sideproject.board.member.domain.Entity.Member;
 import sideproject.board.point.contoller.request.PointRequest;
@@ -27,13 +28,14 @@ import sideproject.board.point.service.PointHistoryService;
 public class PointHistoryController {
 
 	private final PointHistoryService pointHistoryService;
+	private final RedissonLockStockFacade redissonLockStockFacade;
 
 	@PostMapping("/point")
 	public PointHistoryResponse charge(@RequestBody PointRequest request) {
 		Member member = ThreadLocalContext.get();
 
 		PointHistory point = pointHistoryService.charge(member.getId(), request.getAmount());
-		log.info(point.getChargeTime() + "시간 확인중@@@!!");
+
 		return PointHistoryResponse.builder()
 			.name(point.getMember().getName())
 			.balance(point.getMember().getMoney())
