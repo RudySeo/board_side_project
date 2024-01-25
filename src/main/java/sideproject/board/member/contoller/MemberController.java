@@ -37,7 +37,13 @@ public class MemberController {
 
 		Member member = memberService.signUp(request.toEntity());
 
-		return MemberResponse.builder().member(member).build();
+		return MemberResponse.builder()
+			.id(member.getId())
+			.email(member.getEmail())
+			.name(member.getName())
+			.age(member.getAge())
+			.money(member.getMoney())
+			.build();
 	}
 
 	@PostMapping("/login")
@@ -56,12 +62,20 @@ public class MemberController {
 			.collect(Collectors.toList());
 	}
 
+
 	@GetMapping("/user/{id}")
 	public MemberResponse getOneMember(@PathVariable Long id) {
 
 		Member member = memberService.getMemberById(id);
 
-		return MemberResponse.builder().member(member).build();
+		return MemberResponse.builder()
+			.id(member.getId())
+			.email(member.getEmail())
+			.name(member.getName())
+			.age(member.getAge())
+			.money(member.getMoney())
+			.build();
+
 	}
 
 	@PutMapping("/user/{id}")

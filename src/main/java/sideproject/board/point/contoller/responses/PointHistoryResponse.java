@@ -1,5 +1,6 @@
 package sideproject.board.point.contoller.responses;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -11,11 +12,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PointHistoryResponse {
+public class PointHistoryResponse implements Serializable {
 
 	private String name;
 	private int balance;
 	private int chargeAmount;
-	private LocalDateTime chargeTime = null;
+
+
+	private LocalDateTime chargeTime;
 
 }

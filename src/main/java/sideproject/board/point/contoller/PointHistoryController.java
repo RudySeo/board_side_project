@@ -33,10 +33,12 @@ public class PointHistoryController {
 		Member member = ThreadLocalContext.get();
 
 		PointHistory point = pointHistoryService.charge(member.getId(), request.getAmount());
-
+		log.info(point.getChargeTime() + "시간 확인중@@@!!");
 		return PointHistoryResponse.builder()
+			.name(point.getMember().getName())
 			.balance(point.getMember().getMoney())
 			.chargeAmount(point.getAmount())
+			.chargeTime(point.getChargeTime())
 			.build();
 	}
 

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,12 +30,11 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 
 	private final BCryptPasswordEncoder bcrypt;
+	Long expireTime = 100 * 60 * 6000000L;
+	LocalDate currentTime = LocalDate.now();
 
 	@Value("${jwt.secretKey}")
 	private String secretKey;
-
-	Long expireTime = 100 * 60 * 6000000L;
-	LocalDate currentTime = LocalDate.now();
 
 	@Transactional
 	public Member signUp(Member request) {
@@ -78,8 +78,9 @@ public class MemberService {
 	}
 
 	@Transactional(readOnly = true)
+	@Cacheable(value = "Member", key = "#id", cacheManager = "testCacheManager")
 	public Member getMemberById(Long id) {
-
+		
 		return memberRepository.findById(id)
 			.orElseThrow(() -> new ClientException(NOT_FOUND_MEMBER_ID));
 	}

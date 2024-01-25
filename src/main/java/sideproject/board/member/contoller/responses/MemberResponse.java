@@ -9,6 +9,7 @@ import sideproject.board.member.domain.Entity.Member;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class MemberResponse {
 
 	private Long id;
@@ -21,7 +22,6 @@ public class MemberResponse {
 
 	private int money;
 
-	@Builder
 	public MemberResponse(Member member) {
 		this.id = member.getId();
 		this.email = member.getEmail();
@@ -29,6 +29,5 @@ public class MemberResponse {
 		this.age = member.getAge();
 		this.money = member.getMoney();
 	}
-
 
 }

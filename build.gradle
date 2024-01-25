@@ -46,6 +46,9 @@ dependencies {
     //dsl
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+    //레디스
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 }
 
 test {
