@@ -3,7 +3,10 @@ package sideproject.board.point.service;
 import static sideproject.board.global.exception.ErrorCode.*;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,26 +30,42 @@ public class PointHistoryService {
 
 	private final MemberRepository memberRepository;
 
+	private final RedissonClient redissonClient;
+
 	LocalDateTime time = LocalDateTime.now();
 
 	@Transactional
 	public PointHistory charge(Long id, int amount) {
+		RLock lock = redissonClient.getLock(id.toString());
+		try {
+			boolean available = lock.tryLock(5, 1, TimeUnit.SECONDS); // lock 획득
+			if (!available) {
+				System.out.println("lock 획득 실패");
+			}
 
-		//findAndLockById 수정
-		Member findMember = memberRepository.findById(id)
-			.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER_ID));
+			//findAndLockById 수정
+			Member findMember = memberRepository.findById(id)
+				.orElseThrow(() -> new ClientException(ErrorCode.NOT_FOUND_MEMBER_ID));
 
-		findMember.addMoney(amount);
+			findMember.addMoney(amount);
 
-		memberRepository.save(findMember);
+			memberRepository.save(findMember);
 
-		PointHistory point = PointHistory.builder()
-			.amount(amount)
-			.member(findMember)
-			.chargeTime(time)
-			.build();
+			PointHistory point = PointHistory.builder()
+				.amount(amount)
+				.member(findMember)
+				.chargeTime(time)
+				.build();
 
-		return pointRepository.save(point);
+			return pointRepository.save(point);
+
+
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+
+		} finally {
+			lock.unlock(); //lock 해제
+		}
 	}
 
 	@Transactional

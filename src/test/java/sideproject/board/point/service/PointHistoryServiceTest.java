@@ -15,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import sideproject.board.global.exception.RedissonLockStockFacade;
 import sideproject.board.member.domain.Entity.Member;
 import sideproject.board.member.domain.Entity.MemberRepository;
 import sideproject.board.point.domain.Entity.PointHistory;
@@ -31,8 +30,6 @@ class PointHistoryServiceTest {
 	private MemberRepository memberRepository;
 	@InjectMocks
 	private PointHistoryService pointHistoryService;
-	@InjectMocks
-	private RedissonLockStockFacade redissonLockStockFacade;
 
 	@Test
 	@DisplayName("동시성 문제 테스트 코드 작성")
@@ -60,14 +57,11 @@ class PointHistoryServiceTest {
 			.build();
 
 		when(pointRepository.save(any(PointHistory.class))).thenReturn(pointHistory);
-		PointHistory[] results = new PointHistory[numberOfThreads];
 
 		//When
 		for (int i = 0; i < numberOfThreads; i++) {
 			service.execute(() -> {
 				try {
-					// Thread.sleep(300);
-					// redissonLockStockFacade.decrease(testID, amount);
 					pointHistoryService.charge(testID, amount);
 					System.out.println("성공했습니다");
 				} catch (Exception e) {
@@ -83,9 +77,9 @@ class PointHistoryServiceTest {
 		//Then
 
 		Member findMember = memberRepository.findById(testID).orElseThrow();
-		System.out.println(findMember.getMoney() + "====돈확인");
 
 		assertEquals(findMember.getMoney(), initialMoney + numberOfThreads * (amount));
 
 	}
+
 }

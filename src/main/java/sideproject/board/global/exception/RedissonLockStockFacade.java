@@ -19,7 +19,6 @@ public class RedissonLockStockFacade {
 
 	public PointHistory decrease(Long id, int amount) {
 		RLock lock = redissonClient.getLock(id.toString());
-
 		try {
 			boolean available = lock.tryLock(5, 1, TimeUnit.SECONDS); // lock 획득
 			if (!available) {
