@@ -36,9 +36,10 @@ public class PointHistoryService {
 
 	@Transactional
 	public PointHistory charge(Long id, int amount) {
-		RLock lock = redissonClient.getLock(id.toString());
+		final String lockName = id + ":lock";
+		RLock lock = redissonClient.getLock(lockName);
 		try {
-			boolean available = lock.tryLock(5, 1, TimeUnit.SECONDS); // lock 획득
+			boolean available = lock.tryLock(3, 1, TimeUnit.SECONDS); // lock 획득
 			if (!available) {
 				System.out.println("lock 획득 실패");
 			}
