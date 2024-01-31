@@ -8,7 +8,6 @@ import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 
 import sideproject.board.member.domain.Entity.Member;
@@ -96,30 +94,26 @@ class PointHistoryServiceTest {
 	public void testConcurrentCharge() throws InterruptedException {
 		// given
 		Long testId = 1L;
-		int initialMoney = 0;
-		int amount = 10;
-		int numberOfThreads = 5;
+		int initialMoney = 1000;
+		int amount = -1;
+		int numberOfThreads = 1000;
 
 		ExecutorService service = Executors.newFixedThreadPool(numberOfThreads);
 		CountDownLatch latch = new CountDownLatch(numberOfThreads);
 
-		RLock mockLock = mock(RLock.class);
-		when(redissonClient.getLock(anyString())).thenReturn(mockLock);
-		when(mockLock.tryLock(3, 1, TimeUnit.SECONDS)).thenReturn(true);
 
 		Member mockMember = new Member();
 		mockMember.setId(testId);
 		mockMember.setMoney(initialMoney);
 
-
 		when(memberRepository.findById(eq(testId))).thenReturn(Optional.of(mockMember));
 
 		// When
 		for (int i = 0; i < numberOfThreads; i++) {
-			service.execute(() -> {
+			service.submit(() -> {
 				try {
 					pointHistoryService.charge(testId, amount);
-					System.out.println("성공");
+					// System.out.println("성공");
 				} catch (Exception e) {
 					System.out.println("실패");
 				}
@@ -135,10 +129,7 @@ class PointHistoryServiceTest {
 		assertEquals(initialMoney + numberOfThreads * amount, findMember.getMoney());
 
 		// Verify
-		verify(redissonClient, times(numberOfThreads)).getLock(anyString());
 		verify(memberRepository, times(numberOfThreads)).save(mockMember);
 		verify(pointRepository, times(numberOfThreads)).save(any(PointHistory.class));
-		verify(mockLock, times(numberOfThreads)).unlock();
-		verifyNoMoreInteractions(redissonClient, mockLock, memberRepository, pointRepository);
 	}
 }
