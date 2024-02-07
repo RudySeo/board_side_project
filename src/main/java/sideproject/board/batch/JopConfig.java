@@ -55,8 +55,8 @@ public class JopConfig {
 		return new JpaCursorItemReaderBuilder<Member>()
 			.name("testItem")
 			.entityManagerFactory(entityManagerFactory)
-			.queryString("")
-			.parameterValues(Map.of("status", true))
+			.queryString("SELECT m FROM MEMBER m WHERE m.age = :age")
+			.parameterValues(Map.of("age", 12))
 			.build();
 
 	}
@@ -65,7 +65,7 @@ public class JopConfig {
 	public ItemProcessor<Member, Member> testProcess() {
 		return member -> {
 			//값을 업데이트 하는 역할을 한다
-			member.setMoney(10);
+			member.addMoney(1000);
 			return member;
 		};
 	}
@@ -75,6 +75,5 @@ public class JopConfig {
 		return new JpaItemWriterBuilder<Member>()
 			.entityManagerFactory(entityManagerFactory)
 			.build();
-
 	}
 }

@@ -8,7 +8,6 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import sideproject.board.member.domain.Entity.MemberRepository;
 
@@ -24,14 +23,12 @@ class JopConfigTest {
 
 	@Test
 	@DisplayName("배치 테스트코드")
-	@Transactional
 	public void testJob() throws Exception {
 
-		
+
 		JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
 
 	}
-
 
 }
