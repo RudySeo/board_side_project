@@ -2,6 +2,7 @@ package sideproject.board.comment.service;
 
 import static org.mockito.Mockito.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +34,7 @@ class CommentServiceTest {
 	Board saveBoard;
 	CreateCommentRequest createCommentRequest;
 	Comment saveComment;
+	List<Comment> listComments;
 
 	@BeforeEach
 	void setUp() {
@@ -58,6 +60,8 @@ class CommentServiceTest {
 			.content("테스트")
 			.member(saveMember)
 			.build();
+
+		List<Comment> listComments = List.of(saveComment, saveComment);
 	}
 
 
@@ -68,7 +72,7 @@ class CommentServiceTest {
 		when(commentRepositoy.save(saveComment)).thenReturn(saveComment);
 
 		// when
-		commentService.createComment(saveMember, saveMember.getId(), createCommentRequest);
+		commentService.createComment(saveMember, saveBoard.getId(), createCommentRequest);
 
 		// then
 		verify(commentRepositoy).save(saveComment);
@@ -76,17 +80,51 @@ class CommentServiceTest {
 
 	@Test
 	void getAllComment() {
+		// given
+		when(commentRepositoy.findAll()).thenReturn(listComments);
+
+		//when
+		commentService.getOneComment(saveBoard.getId());
+
+		//then
+		verify(commentRepositoy).findAll();
+
 	}
 
 	@Test
 	void getOneComment() {
+		//given
+		when(commentRepositoy.findById(saveComment.getId())).thenReturn(Optional.of(saveComment));
+
+		//when
+		commentService.getOneComment(saveBoard.getId());
+
+		//then
+		verify(commentRepositoy).findById(saveComment.getId());
 	}
 
 	@Test
 	void updateComment() {
+		//given
+		when(commentRepositoy.findById(saveComment.getId())).thenReturn(Optional.of(saveComment));
+		when(commentRepositoy.save(saveComment)).thenReturn(saveComment);
+
+		//when
+		commentService.updateComment(saveComment.getId(), saveComment);
+
+		//then
+		verify(commentRepositoy).save(saveComment);
 	}
 
 	@Test
 	void deleteBoard() {
+		//given
+		when(commentRepositoy.existsById(saveComment.getId())).thenReturn(true);
+		
+		//when
+		commentService.deleteBoard(saveBoard.getId());
+
+		//then
+		verify(commentRepositoy).deleteById(saveComment.getId());
 	}
 }
